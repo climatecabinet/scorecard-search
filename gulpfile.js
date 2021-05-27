@@ -1,6 +1,7 @@
 // generated on 2021-05-06 using generator-webapp 4.0.0-8
 const { src, dest, watch, series, parallel, lastRun } = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
+const rename = require('gulp-rename');
 const browserSync = require('browser-sync');
 const del = require('del');
 const autoprefixer = require('autoprefixer');
@@ -18,9 +19,7 @@ const isTest = process.env.NODE_ENV === 'test';
 const isDev = !isProd && !isTest;
 
 function styles() {
-  return src('styles/*.scss', {
-    sourcemaps: !isProd,
-  })
+  return src('styles/*.scss')
     .pipe($.plumber())
     .pipe(sass.sync({
       outputStyle: 'expanded',
@@ -30,20 +29,17 @@ function styles() {
     .pipe($.postcss([
       autoprefixer()
     ]))
-    .pipe(dest('.tmp/styles', {
-      sourcemaps: !isProd,
-    }))
+    .pipe(dest('styles'))
     .pipe(server.reload({stream: true}));
 };
 
 function scripts() {
- return src('scripts/**/*.js', {
-   sourcemaps: !isProd,
-  })
+ return src('scripts/**/*.js')
     .pipe($.plumber())
-    .pipe(dest('.tmp/scripts', {
-      sourcemaps: !isProd ? '.' : false,
+    .pipe(rename(function(path) {
+        path.basename += "-built"
     }))
+    .pipe(dest('scripts'))
     .pipe(server.reload({stream: true}));
 };
 
@@ -62,7 +58,7 @@ function lint() {
 
 function html() {
   return src('*.html')
-    .pipe($.useref({searchPath: ['.tmp', '.']}))
+    .pipe($.useref({searchPath: ['.']}))
     .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
     .pipe($.if(/\.css$/, $.postcss([cssnano({safe: true, autoprefixer: false})])))
     .pipe($.if(/\.html$/, $.htmlmin({
@@ -93,17 +89,12 @@ function extras() {
   }).pipe(dest('dist'));
 };
 
-function clean() {
-  return del(['.tmp', 'dist'])
-}
-
 function measureSize() {
   return src('dist/**/*')
     .pipe($.size({title: 'build', gzip: true}));
 }
 
 const build = series(
-  clean,
   parallel(
     lint,
     series(parallel(styles, scripts), html),
@@ -118,7 +109,7 @@ function startAppServer() {
     notify: false,
     port,
     server: {
-      baseDir: ['.tmp', '.'],
+      baseDir: ['.'],
       routes: {
         '/node_modules': 'node_modules'
       }
@@ -136,9 +127,9 @@ function startAppServer() {
 
 let serve;
 if (isDev) {
-  serve = series(clean, parallel(styles, scripts), startAppServer);
+  serve = series(parallel(styles, scripts), startAppServer);
 } else if (isTest) {
-  serve = series(clean, scripts, startTestServer);
+  serve = series(scripts, startTestServer);
 } else if (isProd) {
   serve = series(build, startDistServer);
 }
