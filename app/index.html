@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cc score search</title>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&amp;display=swap" rel="stylesheet">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <div id="search-container">
+      <form id="search-form">
+        <h2>Search for a Legislator</h2>
+        <select name="state" id="state-input" class="search-input">
+          <option value="" selected="selected" hidden="hidden">choose a state...</option>
+        </select>
+        <select name="chamber" id="chamber-input" class="search-input">
+          <option value="" selected="selected">any chamber</option>
+        </select>
+        <select name="district" id="district-input" class="search-input">
+          <option value="" selected="selected">any district</option>
+        </select>
+        <button class="search-input">RESET</button>
+      </form>
+      <div id="search-prompt">Get started by selecting a state</div>
+      <div id="search-results">
+        <h2 id="results-label">Results</h2>
+        <div id="results">
+          <div class="results-row">
+            <div class="results-cell name-cell">
+              <p>Fred Theile</p>
+              <p>Florida HD 123</p>
+            </div>
+            <div class="results-cell score-cell">
+              <p>0</p>
+              <p>D+12.3%</p>
+            </div>
+            <div>
+              <button>></button>
+            </div>
+          </div>
+
+<!--           <table>
+            <thead>
+              <tr>
+                <th>LEGISLATOR NAME</th>
+                <th>CC SCORE</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table> -->
+        </div>
+      </div>
+    </div>
+    <!-- build:js scripts/vendor.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	    crossorigin="anonymous"></script>
+    <!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>

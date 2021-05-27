@@ -1,0 +1,213 @@
+/*
+
+MVP acceptance criteria
+ X dynamic loading of dropdown menu content
+ X search results pulled from database
+ O full UX flow implemented (dropdowns, take action, reset, etc.)
+ X search results filtered by dropdowns
+ O basic breakpoint implementation (mobile —> desktop clean)
+
+full acceptance criteria
+ - UI implemented exactly to spec
+ - no query times greater than a few seconds
+ - all breakpoints working on all devices
+
+todo:
+    - responsiveness
+        - format on mobile
+        - add tablet support
+        - add desktop support
+ */
+
+// all breakpoint mixin syntax authored by Brian Gilbertson - is.gd/quJnhY
+@mixin for-phone-only {
+  @media (max-width: 599px) { @content; }
+}
+
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) { @content; }
+}
+
+@mixin for-tablet-portait-only {
+  @media (min-width: 600px) and (max-width: 899px) { @content; }
+}
+
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) { @content; }
+}
+
+@mixin for-tablet-landscape-only {
+  @media (min-width: 900px) and (max-width: 1199px) { @content; }
+}
+
+@mixin for-desktop-up {
+  @media (min-width: 1200px) { @content; }
+}
+
+@mixin for-desktop-only {
+  @media (min-width: 1200px) and (max-width: 1799px) { @content; }
+}
+
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) { @content; }
+}
+
+$cc-orange: #C36C27;
+$cc-grey: #F3F3F3;
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+}
+
+h2 {
+    margin-top: 1em;
+    font-weight: bold;
+    font-size: 1.2em;
+    line-height: 20px;
+}
+
+.loading {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    background-image: url('../images/loading.gif');
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-position: center;
+}
+
+#search-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    background-color: #fff;
+    color: #333;
+    font-family: 'Lato', sans-serif;
+
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#search-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    text-align: center;
+
+    @include for-tablet-portrait-up {
+        padding: 2em;
+        flex-direction: row;
+    }
+}
+
+#search-form > * {
+    flex-grow: 1;
+}
+
+#search-form > h2 {
+    white-space: nowrap;
+    padding: 0 1em 0 1em;
+}
+
+.search-input {
+    padding: 10px;
+    margin: 10px;
+}
+
+select.search-input {
+    width: 70%;
+    flex-shrink: 1;
+
+    font-size: 16pt;
+    border: none;
+    color: $cc-orange;
+    background: $cc-grey;
+
+}
+
+button.search-input {
+    width: 60%;
+    max-width: 11em;
+    font-size: 14pt;
+    background: black;
+    color: white;
+}
+
+#chamber-input, #district-input, button.search-input {
+    display: none;
+}
+
+#search-prompt {
+    text-align: center;
+}
+
+#search-results {
+    margin: 0 1em 0 1em;
+
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+}
+
+#search-results > h2 {
+    margin: 0;
+    padding: 0;
+    color: $cc-orange;
+}
+
+#results {
+    margin: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    
+    flex: 1 1 auto;
+    font-size: 1.3em;
+}
+
+// #results thead {
+//     display: table;
+//     width: 100%;
+
+//     font-size: .8em;
+//     color: $cc-orange;
+// }
+
+// #results th {
+//     text-align: left;
+//     padding: 0;
+
+//     font-size: 8pt;
+// }
+
+#results .results-cell {
+    padding: .5em 0;
+    white-space: nowrap;
+    width: 33.3%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    font-size: 10pt;
+    font-weight: bold; 
+}
+
+.results-row {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.results-row button {
+    padding: 1em;
+    width: 100%;
+    border: none;
+    background-color: $cc-orange;
+    color: white;
+}
