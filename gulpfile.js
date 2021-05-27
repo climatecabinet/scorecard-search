@@ -18,7 +18,7 @@ const isTest = process.env.NODE_ENV === 'test';
 const isDev = !isProd && !isTest;
 
 function styles() {
-  return src('app/styles/*.scss', {
+  return src('styles/*.scss', {
     sourcemaps: !isProd,
   })
     .pipe($.plumber())
@@ -37,7 +37,7 @@ function styles() {
 };
 
 function scripts() {
- return src('app/scripts/**/*.js', {
+ return src('scripts/**/*.js', {
    sourcemaps: !isProd,
   })
     .pipe($.plumber())
@@ -56,16 +56,13 @@ const lintBase = (files, options) => {
     .pipe($.if(!server.active, $.eslint.failAfterError()));
 }
 function lint() {
-  return lintBase('app/scripts/**/*.js', { fix: true })
-    .pipe(dest('app/scripts'));
-};
-function lintTest() {
-  return lintBase('test/spec/**/*.js');
+  return lintBase('scripts/**/*.js', { fix: true })
+    .pipe(dest('scripts'));
 };
 
 function html() {
-  return src('app/*.html')
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
+  return src('*.html')
+    .pipe($.useref({searchPath: ['.tmp', '.']}))
     .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
     .pipe($.if(/\.css$/, $.postcss([cssnano({safe: true, autoprefixer: false})])))
     .pipe($.if(/\.html$/, $.htmlmin({
@@ -82,20 +79,15 @@ function html() {
 }
 
 function images() {
-  return src('app/images/**/*', { since: lastRun(images) })
+  return src('images/**/*', { since: lastRun(images) })
     .pipe($.imagemin())
     .pipe(dest('dist/images'));
 };
 
-function fonts() {
-  return src('app/fonts/**/*.{eot,svg,ttf,woff,woff2}')
-    .pipe($.if(!isProd, dest('.tmp/fonts'), dest('dist/fonts')));
-};
-
 function extras() {
   return src([
-    'app/*',
-    '!app/*.html'
+    '*',
+    '!*.html'
   ], {
     dot: true
   }).pipe(dest('dist'));
@@ -116,7 +108,6 @@ const build = series(
     lint,
     series(parallel(styles, scripts), html),
     images,
-    fonts,
     extras
   ),
   measureSize
@@ -127,7 +118,7 @@ function startAppServer() {
     notify: false,
     port,
     server: {
-      baseDir: ['.tmp', 'app'],
+      baseDir: ['.tmp', '.'],
       routes: {
         '/node_modules': 'node_modules'
       }
@@ -135,51 +126,17 @@ function startAppServer() {
   });
 
   watch([
-    'app/*.html',
-    'app/images/**/*',
-    '.tmp/fonts/**/*'
+    '*.html',
+    'images/**/*',
   ]).on('change', server.reload);
 
-  watch('app/styles/**/*.scss', styles);
-  watch('app/scripts/**/*.js', scripts);
-  watch('app/fonts/**/*', fonts);
-}
-
-function startTestServer() {
-  server.init({
-    notify: false,
-    port,
-    ui: false,
-    server: {
-      baseDir: 'test',
-      routes: {
-        '/scripts': '.tmp/scripts',
-        '/node_modules': 'node_modules'
-      }
-    }
-  });
-
-  watch('test/index.html').on('change', server.reload);
-  watch('app/scripts/**/*.js', scripts);
-  watch('test/spec/**/*.js', lintTest);
-}
-
-function startDistServer() {
-  server.init({
-    notify: false,
-    port,
-    server: {
-      baseDir: 'dist',
-      routes: {
-        '/node_modules': 'node_modules'
-      }
-    }
-  });
+  watch('styles/**/*.scss', styles);
+  watch('scripts/**/*.js', scripts);
 }
 
 let serve;
 if (isDev) {
-  serve = series(clean, parallel(styles, scripts, fonts), startAppServer);
+  serve = series(clean, parallel(styles, scripts), startAppServer);
 } else if (isTest) {
   serve = series(clean, scripts, startTestServer);
 } else if (isProd) {
