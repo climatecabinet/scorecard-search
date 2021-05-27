@@ -34,11 +34,9 @@ function styles() {
 };
 
 function scripts() {
- return src('scripts/**/*.js')
+ return src('scripts/main.js')
     .pipe($.plumber())
-    .pipe(rename(function(path) {
-        path.basename += "-built"
-    }))
+    .pipe(rename('scripts/main-built.js'))
     .pipe(dest('scripts'))
     .pipe(server.reload({stream: true}));
 };
