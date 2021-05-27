@@ -36,7 +36,7 @@ function styles() {
 function scripts() {
  return src('scripts/main.js')
     .pipe($.plumber())
-    .pipe(rename('scripts/main-built.js'))
+    .pipe(rename('main-built.js'))
     .pipe(dest('scripts'))
     .pipe(server.reload({stream: true}));
 };

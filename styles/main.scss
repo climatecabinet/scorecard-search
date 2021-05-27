@@ -151,7 +151,7 @@ button.search-input {
 #search-results {
     margin: 0 1em 0 1em;
     flex: 1 1 auto;
-    display: flex;
+    display: none;
     flex-flow: column nowrap;
     overflow: hidden;
 }
@@ -225,7 +225,7 @@ button.search-input {
     color: grey;
 }
 
-.results-row button {
+.results-cell button {
     display: table-cell;
 
     padding: 1em;

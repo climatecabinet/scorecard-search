@@ -132,7 +132,7 @@ function displayStateLegislators() {
 function refreshLegislatorFilters() {
   const currDistrict = $('#district-input').val();
   const currChamber = $('#chamber-input').val();
-  const stateLegis = $('#results > table > tbody').children();
+  const stateLegis = $('#results-table').children();
 
   stateLegis.show();
 
@@ -155,7 +155,7 @@ function refreshLegislatorFilters() {
 async function handleStateSelection() {
   displayStateLegislators();
   
-  await loadAndUnload('#results > table > tbody', async function() {
+  await loadAndUnload('#results-table', async function() {
     // clear event listeners and contents from chamber and dist inputs
     ['#chamber-input', '#district-input'].forEach((id) => {
       $(id).off();
@@ -168,7 +168,7 @@ async function handleStateSelection() {
     });
 
     // clear the currently displayed reps, if any
-    $('#results > table > tbody')
+    $('#results-table')
       .children()
       .remove();
 
@@ -196,11 +196,19 @@ async function handleStateSelection() {
 
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
-      $('#results > table > tbody').append(
-        $('<tr></tr>')
-          .append($(`<td>${legi['full_name']}</td>`))
-          .append($(`<td>${parseInt(legi['cc_score'])}</td>`))
-          .append($('<td><button>\></button></td>'))
+      $('#results-table').append(
+        $('<div class="result-row"></div>')
+          .append(
+            $('<div class="results-cell name-cell"></div>')
+                .append($(`<p>${legi['full_name']}</p>`))
+                .append($(`<p>${$('#state-input').val()} ${legi['office']['district']['shortcode']}</p>`))
+          )
+          .append(
+            $('<div class="results-cell score-cell"></div>')
+                .append($(`<p>${parseInt(legi['cc_score'])}</p>`))
+                .append($('<p>D\+XY\.Z\%</p>'))  // TEMP - REPLACE WITH ELECTIONS NUMBERS
+          )
+          .append($('<div class="results-cell"><button>\></button></div>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );
@@ -234,7 +242,7 @@ async function handleStateSelection() {
   });
 }
 
-// $('#state-input').on('change', handleStateSelection);
+$('#state-input').on('change', handleStateSelection);
 $('#search-form > button').on('click', async function(e) {
   e.preventDefault();
 

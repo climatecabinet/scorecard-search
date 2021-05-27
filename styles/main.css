@@ -132,9 +132,7 @@ button.search-input {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: none;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-flow: column nowrap;
@@ -200,7 +198,7 @@ button.search-input {
   color: grey;
 }
 
-.results-row button {
+.results-cell button {
   display: table-cell;
   padding: 1em;
   width: 100%;
