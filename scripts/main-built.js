@@ -170,6 +170,9 @@ async function handleStateSelection() {
     // clear the currently displayed reps, if any
     $('#results-table')
       .children()
+      .filter(function() {
+        return $(this).attr('id') != 'results-headers';
+      })
       .remove();
 
     const allLegis = await callAPI(`

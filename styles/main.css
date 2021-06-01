@@ -160,21 +160,24 @@ button.search-input {
 
 .results-row {
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: row nowrap;
-          flex-flow: row nowrap;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  display: table-row;
+}
+
+#results-headers {
+  display: table-header-group;
+  color: #C36C27;
+}
+
+#name-header, #score-header {
+  padding: 1em 0.5em;
+  display: table-cell;
+  font-size: 8pt;
 }
 
 #results-table .results-cell {
   padding: 1em 0.5em;
   display: table-cell;
+  position: sticky;
   font-size: 12pt;
   font-weight: bold;
 }
