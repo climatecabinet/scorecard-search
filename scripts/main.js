@@ -155,7 +155,7 @@ function refreshLegislatorFilters() {
 async function handleStateSelection() {
   displayStateLegislators();
   
-  await loadAndUnload('#results-table', async function() {
+  await loadAndUnload('#search-results', async function() {
     // clear event listeners and contents from chamber and dist inputs
     ['#chamber-input', '#district-input'].forEach((id) => {
       $(id).off();
@@ -197,7 +197,7 @@ async function handleStateSelection() {
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
       $('#results-table').append(
-        $('<div class="result-row"></div>')
+        $('<div class="results-row"></div>')
           .append(
             $('<div class="results-cell name-cell"></div>')
                 .append($(`<p>${legi['full_name']}</p>`))
