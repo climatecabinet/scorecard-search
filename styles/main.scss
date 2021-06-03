@@ -90,7 +90,7 @@ h2 {
     font-family: 'Lato', sans-serif;
 
     display: flex;
-    flex-flow: column nowrap;
+    flex-direction: column;
 }
 
 #search-form {
@@ -150,10 +150,10 @@ button.search-input {
 
 #search-results {
     margin: 0 1em 0 1em;
-    flex: 1 1 auto;
+    flex-grow: 1;
     display: none;
     flex-flow: column nowrap;
-    overflow: hidden;
+    overflow-y: hidden;
 }
 
 #search-results > h2 {
@@ -162,15 +162,22 @@ button.search-input {
     color: $cc-orange;
 }
 
-#results-scroll-wrapper {
-    overflow-y: scroll;
+#results-table-scrollable {
+    overflow: scroll;
 }
 
-#results-table {
+#results-headers {
+    display: table-row;
+    color: $cc-orange;
+}
+
+#results-body {
     margin: 0;
     width: 100%;
+    
     display: table;
     table-layout: fixed;
+
     font-size: 1.3em;
 }
 
@@ -184,24 +191,18 @@ button.search-input {
     display: table-cell;
 }
 
-#results-headers {
-    display: table-header-group;
-    color: $cc-orange;
-}
-
-#name-header, #score-header {
+#results-headers div {
     @include results-cell-layout;
-    font-size: 8pt;
-}
-
-// #results-table .results-row:nth-child(1) {
-//     padding: 0em .5em 1em .5em;
-// }
-
-#results-table .results-cell {
-    @include results-cell-layout;
-
     position: sticky;
+    top: 0;
+    transform: translate(0, -1px);
+
+    font-size: 8pt;
+    background-color: white;
+}
+
+#results-body .results-cell {
+    @include results-cell-layout;
     font-size: 12pt;
     font-weight: bold;
 }

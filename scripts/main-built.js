@@ -132,7 +132,7 @@ function displayStateLegislators() {
 function refreshLegislatorFilters() {
   const currDistrict = $('#district-input').val();
   const currChamber = $('#chamber-input').val();
-  const stateLegis = $('#results-table').children();
+  const stateLegis = $('#results-body').children();
 
   stateLegis.show();
 
@@ -168,7 +168,7 @@ async function handleStateSelection() {
     });
 
     // clear the currently displayed reps, if any
-    $('#results-table')
+    $('#results-body')
       .children()
       .filter(function() {
         return $(this).attr('id') != 'results-headers';
@@ -199,7 +199,7 @@ async function handleStateSelection() {
 
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
-      $('#results-table').append(
+      $('#results-body').append(
         $('<div class="results-row"></div>')
           .append(
             $('<div class="results-cell name-cell"></div>')
