@@ -6,7 +6,9 @@ const CC_API_GQL = CC_API_BASE + "/graphql";
 /** constant {string} */
 const CC_API_KEY = "A1RJYVgCktjnwsajZuqOPrqHE14NANh0I0lOIde5Fbxdz1r80jItkfe4QiZz6gdV";
 /** constant {integer} */
-const LEGIS_LIMIT = 1000
+const SMALL_BREAKPOINT = 599;
+/** constant {integer} */
+const LEGIS_LIMIT = 1000;
 /** constant {object} */
 var CC_API_TOKENS = null;
 
@@ -132,7 +134,7 @@ function displayStateLegislators() {
 function refreshLegislatorFilters() {
   const currDistrict = $('#district-input').val();
   const currChamber = $('#chamber-input').val();
-  const stateLegis = $('#results-body').children();
+  const stateLegis = $('#results-body > .results-row');
 
   stateLegis.show();
 
@@ -148,6 +150,26 @@ function refreshLegislatorFilters() {
     }).hide();
   }
 }
+
+/**
+ * Applies approriate table formatting for the current Browser size.
+ */
+function formatTableForBrowserSize() {
+  // if the table is displayed
+  if($('#search-results').css('display') != 'none'){
+    // get whether this is for mobile or not
+    if($(window).width() <= SMALL_BREAKPOINT){
+      $('.district-cell, .election-cell').hide();
+      $('.results-cell > p:nth-child(2)').show();
+      $('.results-cell > button').html('\>');
+    } else {
+      $('.district-cell, .election-cell').show();
+      $('.results-cell > p:nth-child(2)').hide();
+      $('.results-cell > button').html('TAKE ACTION');
+    }
+  }
+}
+
 
 /**
  * When the user selects a state, fetch legislators and progress the UI.
@@ -199,12 +221,22 @@ async function handleStateSelection() {
 
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
+      let districtTag = `<p>${$('#state-input').val()} ${legi['office']['district']['shortcode']}</p>`;
+
       $('#results-body').append(
         $('<div class="results-row"></div>')
           .append(
             $('<div class="results-cell name-cell"></div>')
                 .append($(`<p>${legi['full_name']}</p>`))
-                .append($(`<p>${$('#state-input').val()} ${legi['office']['district']['shortcode']}</p>`))
+                .append($(districtTag))
+          )
+          .append(
+            $('<div class="results-cell district-cell"></div>')
+              .append($(districtTag))
+          )
+          .append(
+            $('<div class="results-cell election-cell"></div>')
+              .append($('<p>D\+XY\.Z\%</p>'))  // TEMP - REPLACE WITH ELECTIONS NUMBERS
           )
           .append(
             $('<div class="results-cell score-cell"></div>')
@@ -242,10 +274,17 @@ async function handleStateSelection() {
     // start listening for changes to the district/ chamber filters
     $('#chamber-input').on('change', refreshLegislatorFilters);
     $('#district-input').on('change', refreshLegislatorFilters);
+
+    formatTableForBrowserSize();
   });
 }
 
 $('#state-input').on('change', handleStateSelection);
+
+
+/**
+ * When the Reset button is clicked, reset the page.
+ */
 $('#search-form > button').on('click', async function(e) {
   e.preventDefault();
 
@@ -258,6 +297,11 @@ $('#search-form > button').on('click', async function(e) {
   // reset the state selection to initial load state
   $('#state-input').val('');
 });
+
+/**
+ * Whenever the page resizes, make sure the proper table formatting is applied.
+ */
+$(window).resize(formatTableForBrowserSize);
 
 /**
  * When the DOM is ready, initialize the page components.

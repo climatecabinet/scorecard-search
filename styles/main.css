@@ -146,7 +146,7 @@ button.search-input {
   color: #C36C27;
 }
 
-#results-table-scrollable {
+#results-table {
   overflow: scroll;
 }
 
@@ -188,6 +188,11 @@ button.search-input {
 
 .name-cell {
   width: 45%;
+}
+@media (min-width: 900px) {
+  .name-cell {
+    width: 30%;
+  }
 }
 
 .score-cell {

@@ -162,7 +162,7 @@ button.search-input {
     color: $cc-orange;
 }
 
-#results-table-scrollable {
+#results-table {
     overflow: scroll;
 }
 
@@ -209,6 +209,10 @@ button.search-input {
 
 .name-cell {
     width: 45%;
+
+    @include for-tablet-landscape-up {
+        width: 30%;
+    }
 }
 
 .score-cell {
