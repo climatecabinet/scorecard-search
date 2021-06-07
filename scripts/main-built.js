@@ -327,4 +327,15 @@ $(document).ready(async function(){
       $("#state-input").append($(`<option value=${reg.state_abbr}>${reg.name}</option>`));
     });
   });
+
+  // handle URL state query, if present
+  const currUrl = new URL(window.location.href);
+  const queryState = currUrl.searchParams.get('state');
+
+  if(queryState) {
+    // set the state selector
+    $('#state-input').val(queryState);
+    // call handle state selection
+    handleStateSelection();
+  }
 });
