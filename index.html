@@ -18,15 +18,17 @@
       <form id="search-form">
         <h2>Search for a Legislator</h2>
         <select name="state" id="state-input" class="search-input">
-          <option value="" selected="selected" hidden="hidden">choose a state...</option>
+          <option value="" selected="selected" hidden="hidden">Select State</option>
         </select>
-        <select name="chamber" id="chamber-input" class="search-input">
-          <option value="" selected="selected">any chamber</option>
+        <select name="chamber" id="chamber-input" class="search-input" disabled>
+          <option value="" selected="selected" hidden="hidden">Select Chamber</option>
+          <!-- <option value="" selected="selected">any chamber</option> -->
         </select>
-        <select name="district" id="district-input" class="search-input">
-          <option value="" selected="selected">any district</option>
+        <select name="district" id="district-input" class="search-input" disabled>
+          <option value="" selected="selected" hidden="hidden">Select District Number</option>
+          <!-- <option value="" selected="selected">any district</option> -->
         </select>
-        <button class="search-input">RESET</button>
+        <button id="search-button" class="search-input" disabled>SEARCH</button>
       </form>
       <div id="search-prompt">Get started by selecting a state</div>
       <div id="search-results">

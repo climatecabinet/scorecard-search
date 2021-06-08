@@ -1,24 +1,3 @@
-/*
-
-MVP acceptance criteria
- X dynamic loading of dropdown menu content
- X search results pulled from database
- O full UX flow implemented (dropdowns, take action, reset, etc.)
- X search results filtered by dropdowns
- O basic breakpoint implementation (mobile —> desktop clean)
-
-full acceptance criteria
- - UI implemented exactly to spec
- - no query times greater than a few seconds
- - all breakpoints working on all devices
-
-todo:
-    - responsiveness
-        - format on mobile
-        - add tablet support
-        - add desktop support
- */
-
 // all breakpoint mixin syntax authored by Brian Gilbertson - is.gd/quJnhY
 @mixin for-phone-only {
   @media (max-width: 599px) { @content; }
@@ -54,6 +33,8 @@ todo:
 
 $cc-orange: #C36C27;
 $cc-grey: #F3F3F3;
+$disabled: #777777;
+$disabled-text: #EEEEEE;
 
 
 html, body {
@@ -123,25 +104,33 @@ h2 {
 
 select.search-input {
     width: 70%;
+    padding: .5em;
     flex-shrink: 1;
-
-    font-size: 16pt;
-    border: none;
-    color: $cc-orange;
-    background: $cc-grey;
-
+    
+    border: 1px solid $cc-orange;
+    font-size: 14pt;
 }
 
-button.search-input {
+select.search-input:disabled {
+    border: 1px solid $disabled;
+}
+
+#search-form > button {
     width: 60%;
     max-width: 11em;
-    font-size: 14pt;
-    background: black;
+    font-size: 12pt;
+    background: $cc-orange;
     color: white;
+    border: none;
 }
 
-#chamber-input, #district-input, button.search-input {
-    display: none;
+#search-form > button:disabled {
+    background: $disabled;
+    color: $disabled-text;
+}
+
+#search-form > button.reset-button {
+    background: black;
 }
 
 #search-prompt {
@@ -211,7 +200,7 @@ button.search-input {
     width: 45%;
 
     @include for-tablet-landscape-up {
-        width: 30%;
+        width: 20%;
     }
 }
 

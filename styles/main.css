@@ -1,24 +1,3 @@
-@charset "UTF-8";
-/*
-
-MVP acceptance criteria
- X dynamic loading of dropdown menu content
- X search results pulled from database
- O full UX flow implemented (dropdowns, take action, reset, etc.)
- X search results filtered by dropdowns
- O basic breakpoint implementation (mobile —> desktop clean)
-
-full acceptance criteria
- - UI implemented exactly to spec
- - no query times greater than a few seconds
- - all breakpoints working on all devices
-
-todo:
-    - responsiveness
-        - format on mobile
-        - add tablet support
-        - add desktop support
- */
 html, body {
   margin: 0;
   padding: 0;
@@ -103,24 +82,33 @@ h2 {
 
 select.search-input {
   width: 70%;
+  padding: 0.5em;
   -ms-flex-negative: 1;
       flex-shrink: 1;
-  font-size: 16pt;
-  border: none;
-  color: #C36C27;
-  background: #F3F3F3;
+  border: 1px solid #C36C27;
+  font-size: 14pt;
 }
 
-button.search-input {
+select.search-input:disabled {
+  border: 1px solid #777777;
+}
+
+#search-form > button {
   width: 60%;
   max-width: 11em;
-  font-size: 14pt;
-  background: black;
+  font-size: 12pt;
+  background: #C36C27;
   color: white;
+  border: none;
 }
 
-#chamber-input, #district-input, button.search-input {
-  display: none;
+#search-form > button:disabled {
+  background: #777777;
+  color: #EEEEEE;
+}
+
+#search-form > button.reset-button {
+  background: black;
 }
 
 #search-prompt {
@@ -191,7 +179,7 @@ button.search-input {
 }
 @media (min-width: 900px) {
   .name-cell {
-    width: 30%;
+    width: 20%;
   }
 }
 

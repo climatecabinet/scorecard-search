@@ -119,9 +119,6 @@ function displayStateLegislators() {
   $('#search-prompt').css('display', 'none');
 
   // display results elements
-  $('#chamber-input').fadeIn('fast');
-  $('#district-input').fadeIn('fast');
-  $('button.search-input').fadeIn('fast');  
   $('#search-results').fadeIn({
     duration: 'fast',
     start: () => $('#search-results').css('display', 'flex')
@@ -170,13 +167,41 @@ function formatTableForBrowserSize() {
   }
 }
 
+/**
+ * Toggles the enabled/disabled state of the form.
+*/
+
+function showFullForm(shouldShow){
+  // hide the placeholder prompt
+  if(shouldShow) {
+    $('#search-prompt').hide();
+    $('#search-button')
+      .html('RESET')
+      .addClass('reset-button');
+    // display results elements
+    $('#search-results').fadeIn({
+      duration: 'fast',
+      start: () => $('#search-results').css('display', 'flex')
+    });
+  } else {
+    $('#search-prompt').show();
+    $('#search-button')
+      .html('SEARCH')
+      .removeClass('reset-button');
+    $('#search-results').hide();
+  }
+
+  $('#chamber-input, #district-input, #search-button')
+    .attr('disabled', !shouldShow);
+
+}
 
 /**
  * When the user selects a state, fetch legislators and progress the UI.
  */
 async function handleStateSelection() {
-  displayStateLegislators();
-  
+  showFullForm(true);
+
   await loadAndUnload('#search-results', async function() {
     // clear event listeners and contents from chamber and dist inputs
     ['#chamber-input', '#district-input'].forEach((id) => {
@@ -279,8 +304,8 @@ async function handleStateSelection() {
   });
 }
 
-$('#state-input').on('change', handleStateSelection);
-
+// When a state is selected, enable the search button
+$('#state-input').on('change', () => $('#search-form > button').attr('disabled', false));
 
 /**
  * When the Reset button is clicked, reset the page.
@@ -288,14 +313,21 @@ $('#state-input').on('change', handleStateSelection);
 $('#search-form > button').on('click', async function(e) {
   e.preventDefault();
 
-  // reset page elements to initial load state
-  $('#search-results').hide();
-  $('#chamber-input').hide();
-  $('#district-input').hide();
-  $('#search-prompt').show();
+  if($('#search-form > button').html() == "SEARCH") {
+    handleStateSelection();
+  } else {
+    showFullForm(false);
 
-  // reset the state selection to initial load state
-  $('#state-input').val('');
+    // reset the dropdown menu options
+    $('#chamber-input, #district-input')
+      .children()
+      .filter(function() {
+        return $(this).attr('hidden') != 'hidden';
+      })
+      .remove();
+    $('#chamber-input, #district-input').attr('disabled', true);
+    $('#state-input').val('');
+  }
 });
 
 /**
