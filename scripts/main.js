@@ -222,6 +222,7 @@ async function handleStateSelection() {
       })
       .remove();
 
+    // get all legislators from the API
     const allLegis = await callAPI(`
       query ($stateAbbr: String){
         representatives(
@@ -235,6 +236,11 @@ async function handleStateSelection() {
             seat_number
             district {
               shortcode
+              presidential_elections {
+                year
+                dem_share
+                rep_share
+              }
             }
           }
         }
@@ -244,29 +250,56 @@ async function handleStateSelection() {
       'stateAbbr': $('#state-input').val(),
     });
 
+    // sort the list of legi's by district number
+    allLegis['representatives'].sort((a, b) => {
+      let aDistCode = a['office']['district']['shortcode'].slice(2);
+      let aDistNum = parseInt(aDistCode.replace(/[^0-9]/, ''));
+      let aDistLetter = aDistCode.replace(/[0-9]/, '');
+
+      let bDistCode = b['office']['district']['shortcode'].slice(2);
+      let bDistNum = parseInt(bDistCode.replace(/[^0-9]/, ''));
+      let bDistLetter = bDistCode.replace(/[0-9]/, '');
+
+      return aDistNum - bDistNum || aDistLetter.localeCompare(bDistLetter);
+    });
+
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
-      let districtTag = `<p>${$('#state-input').val()} ${legi['office']['district']['shortcode']}</p>`;
+      let distShortcode = `${$('#state-input > option:selected').text()} ${legi['office']['district']['shortcode']}`;
+      // replace the score value with '-' if NaN
+      let ccScore = legi['cc_score'] ? parseInt(legi['cc_score']) : '-';
+      // render the elections number, if possible - otherwise use a '-'
+      let electionCode = '-';
+      let electionList = legi['office']['district']['presidential_elections'];
+
+      if(electionList && electionList.filter(e => e['year'] === 2016)) {
+        let elctObj = electionList.filter(e => e['year'] === 2016).pop();
+        let elctLetter = elctObj['dem_share'] > elctObj['rep_share'] ? 'D' : 'R';
+        let elctNumber = Math.max(elctObj['dem_share'], elctObj['rep_share']) - Math.min(elctObj['dem_share'], elctObj['rep_share']);
+        elctNumber = (elctNumber*100).toFixed(2);
+
+        electionCode = `${elctLetter}+%${elctNumber}`;
+      }
 
       $('#results-body').append(
         $('<div class="results-row"></div>')
           .append(
             $('<div class="results-cell name-cell"></div>')
                 .append($(`<p>${legi['full_name']}</p>`))
-                .append($(districtTag))
+                .append($(`<p>${distShortcode}</p>`))
           )
           .append(
             $('<div class="results-cell district-cell"></div>')
-              .append($(districtTag))
+              .append($(`<p>${distShortcode}</p>`))
           )
           .append(
             $('<div class="results-cell election-cell"></div>')
-              .append($('<p>D\+XY\.Z\%</p>'))  // TEMP - REPLACE WITH ELECTIONS NUMBERS
+              .append($(`<p>${electionCode}</p>`))
           )
           .append(
             $('<div class="results-cell score-cell"></div>')
-                .append($(`<p>${parseInt(legi['cc_score'])}</p>`))
-                .append($('<p>D\+XY\.Z\%</p>'))  // TEMP - REPLACE WITH ELECTIONS NUMBERS
+                .append($(`<p>${ccScore}</p>`))
+                .append($(`<p>${electionCode}</p>`))
           )
           .append($('<div class="results-cell"><button>\></button></div>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())
