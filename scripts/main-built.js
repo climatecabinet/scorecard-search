@@ -170,7 +170,6 @@ function formatTableForBrowserSize() {
 /**
  * Toggles the enabled/disabled state of the form.
 */
-
 function showFullForm(shouldShow){
   // hide the placeholder prompt
   if(shouldShow) {
@@ -236,6 +235,7 @@ async function handleStateSelection() {
             seat_number
             district {
               shortcode
+              district_type
               presidential_elections {
                 year
                 dem_share
@@ -266,8 +266,10 @@ async function handleStateSelection() {
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
       let distShortcode = `${$('#state-input > option:selected').text()} ${legi['office']['district']['shortcode']}`;
+      
       // replace the score value with '-' if NaN
       let ccScore = legi['cc_score'] ? parseInt(legi['cc_score']) : '-';
+      
       // render the elections number, if possible - otherwise use a '-'
       let electionCode = '-';
       let electionList = legi['office']['district']['presidential_elections'];
@@ -281,6 +283,7 @@ async function handleStateSelection() {
         electionCode = `${elctLetter}+%${elctNumber}`;
       }
 
+      // render the row
       $('#results-body').append(
         $('<div class="results-row"></div>')
           .append(
@@ -307,10 +310,21 @@ async function handleStateSelection() {
       );
     });
 
-    // update the list of chamber options
-    ['Lower', 'Upper'].forEach((chamber) => {
+    // get the names of this state's lower and upper chambers
+    chambersMap = {};
+    allLegis['representatives'].forEach(legi => {
+      chamberType = legi['role'] === 'Senator' ? 'upper' : 'lower';
+
+      if(!Object.keys(chambersMap).includes(chamberType)) {
+        chambersMap[chamberType] = legi['office']['district']['district_type']
+                                     .replace('Legislative', 'House')  // fix for MD
+                                     .trim();
+      }
+    });
+
+    Object.entries(chambersMap).forEach((chamber) => {
       $('#chamber-input').append(
-        `<option value="${chamber.toLowerCase()}">${chamber}</option>`
+        `<option value="${chamber[0]}">${chamber[1]}</option>`
       );
     });
 
