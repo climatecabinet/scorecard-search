@@ -7,7 +7,7 @@ html, body {
 h2 {
   margin-top: 1em;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.3em;
   line-height: 20px;
 }
 
@@ -72,10 +72,13 @@ h2 {
 
 #search-form > h2 {
   white-space: nowrap;
-  padding: 0 1em 0 0;
+  margin-bottom: 0;
+  text-align: center;
+  color: black;
 }
 @media (min-width: 900px) {
   #search-form > h2 {
+    padding: 0 1em 0 0;
     font-size: 18pt;
   }
 }
@@ -83,6 +86,8 @@ h2 {
 .search-input {
   padding: 10px;
   margin: 10px;
+  max-width: 15.6rem;
+  height: 3.2rem;
 }
 
 select.search-input {
@@ -100,7 +105,8 @@ select.search-input:disabled {
 
 #search-form > button {
   width: 60%;
-  max-width: 11em;
+  margin: 0;
+  max-width: 12.5em;
   font-size: 12pt;
   background: #C36C27;
   color: white;
@@ -130,6 +136,7 @@ select.search-input:disabled {
       -ms-flex-flow: column nowrap;
           flex-flow: column nowrap;
   overflow-y: hidden;
+  padding: 1.8rem 2.1rem 0 2.1rem;
 }
 @media (min-width: 600px) {
   #search-results {
@@ -212,10 +219,10 @@ select.search-input:disabled {
   color: grey;
 }
 
-.results-cell button {
-  display: table-cell;
-  padding: 1em;
+button.results-cell {
   width: 100%;
+  height: 100%;
+  padding: 1rem !important;
   border: none;
   background-color: #C36C27;
   color: white;

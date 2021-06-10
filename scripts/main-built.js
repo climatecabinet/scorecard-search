@@ -304,7 +304,7 @@ async function handleStateSelection() {
                 .append($(`<p>${ccScore}</p>`))
                 .append($(`<p>${electionCode}</p>`))
           )
-          .append($('<div class="results-cell"><button>\></button></div>'))
+          .append($('<button class="results-cell">\></button>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );
