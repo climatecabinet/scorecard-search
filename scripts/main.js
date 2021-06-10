@@ -352,7 +352,14 @@ async function handleStateSelection() {
 }
 
 // When a state is selected, enable the search button
-$('#state-input').on('change', () => $('#search-form > button').attr('disabled', false));
+$('#state-input').on('change', () => {
+  // if the results table is currently displayed, just trigger a new state selection
+  if($('#search-results').is(':visible')){
+    handleStateSelection();
+  } else {
+    $('#search-form > button').attr('disabled', false);
+  }
+});
 
 /**
  * When the Reset button is clicked, reset the page.
