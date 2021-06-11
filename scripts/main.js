@@ -158,11 +158,13 @@ function formatTableForBrowserSize() {
     if($(window).width() <= SMALL_BREAKPOINT){
       $('.district-cell, .election-cell').hide();
       $('.results-cell > p:nth-child(2)').show();
-      $('.results-cell > button').html('\>');
+      $('button.results-cell').html('\>');
+      $('#score-header').html('CC SCORE');
     } else {
       $('.district-cell, .election-cell').show();
       $('.results-cell > p:nth-child(2)').hide();
-      $('.results-cell > button').html('TAKE ACTION');
+      $('button.results-cell').html('TAKE ACTION');
+      $('#score-header').html('CLIMATE CABINET SCORE');
     }
   }
 }
