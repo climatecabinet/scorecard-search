@@ -80,6 +80,18 @@ button:enabled {
   text-align: center;
   color: black;
 }
+@media (min-width: 600px) {
+  #search-form > h2 {
+    padding: 0 0.2em 0 0;
+    margin: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 900px) {
+  #search-form > h2 {
+    font-size: 1rem;
+  }
+}
 @media (min-width: 1200px) {
   #search-form > h2 {
     padding: 0 1em 0 0;
@@ -108,6 +120,20 @@ select.search-input {
   border: 1px solid #C36C27;
   font-size: 14pt;
 }
+@media (min-width: 600px) and (max-width: 899px) {
+  select.search-input {
+    max-height: 2rem;
+    padding: 0.2rem;
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  select.search-input {
+    max-height: 2rem;
+    padding: 0.2rem;
+    font-size: 0.9rem;
+  }
+}
 
 select.search-input:disabled {
   border: 1px solid #777777;
@@ -121,6 +147,20 @@ select.search-input:disabled {
   background: #C36C27;
   color: white;
   border: none;
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  #search-form > button {
+    width: unset;
+    height: 2.5rem;
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  #search-form > button {
+    width: unset;
+    height: 2.5rem;
+    font-size: 0.8rem;
+  }
 }
 @media (min-width: 1200px) {
   #search-form > button {
@@ -202,12 +242,27 @@ select.search-input:disabled {
 #results-headers div {
   padding: 0.7rem 1rem 0.7rem 0;
   display: table-cell;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 0.5rem !important;
   position: sticky;
   top: 0;
   -webkit-transform: translate(0, -1px);
           transform: translate(0, -1px);
   font-size: 8pt;
   background-color: white;
+  vertical-align: bottom;
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  #results-headers div {
+    padding: 0.7rem 1rem 1.2rem 0;
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  #results-headers div {
+    padding: 0.7rem 1rem 1.4rem 0;
+  }
 }
 @media (min-width: 1200px) {
   #results-headers div {
@@ -220,6 +275,21 @@ select.search-input:disabled {
   display: table-cell;
   font-size: 12pt;
 }
+@media (min-width: 600px) and (max-width: 899px) {
+  .results-cell {
+    padding: 0.7rem 1rem 1.2rem 0;
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  .results-cell {
+    padding: 0.7rem 1rem 1.4rem 0;
+  }
+}
+@media (min-width: 900px) {
+  .results-cell {
+    font-size: 1.2rem;
+  }
+}
 @media (min-width: 1200px) {
   .results-cell {
     font-size: 1.4rem;
@@ -230,7 +300,12 @@ select.search-input:disabled {
 .name-cell {
   width: 45%;
 }
-@media (min-width: 1200px) and (max-width: 1799px) {
+@media (min-width: 600px) {
+  .name-cell {
+    width: 25%;
+  }
+}
+@media (min-width: 1200px) {
   .name-cell {
     width: 30%;
   }
@@ -248,9 +323,25 @@ select.search-input:disabled {
 .score-cell {
   width: 30%;
 }
-@media (min-width: 1200px) and (max-width: 1799px) {
+@media (min-width: 600px) {
+  .score-cell {
+    width: 12%;
+  }
+}
+@media (min-width: 900px) {
+  .score-cell {
+    width: 17%;
+  }
+}
+@media (min-width: 1200px) {
   .score-cell {
     width: unset;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  .election-cell {
+    width: 19%;
   }
 }
 
@@ -263,6 +354,7 @@ select.search-input:disabled {
 
 .results-cell p:nth-child(2) {
   color: grey;
+  display: none;
 }
 
 #results-body button.results-cell {
@@ -273,4 +365,16 @@ select.search-input:disabled {
   background-color: #C36C27;
   color: white;
   font-size: 1.1rem;
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  #results-body button.results-cell {
+    height: 2.5rem;
+    padding: 0;
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 900px) and (max-width: 1199px) {
+  #results-body button.results-cell {
+    font-size: 0.9rem;
+  }
 }

@@ -8,6 +8,8 @@ const CC_API_KEY = "A1RJYVgCktjnwsajZuqOPrqHE14NANh0I0lOIde5Fbxdz1r80jItkfe4QiZz
 /** constant {integer} */
 const SMALL_BREAKPOINT = 599;
 /** constant {integer} */
+const MID_BREAKPOINT = 899;
+/** constant {integer} */
 const LEGIS_LIMIT = 1000;
 /** constant {object} */
 var CC_API_TOKENS = null;
@@ -159,12 +161,15 @@ function formatTableForBrowserSize() {
       $('.district-cell, .election-cell').hide();
       $('.results-cell > p:nth-child(2)').show();
       $('button.results-cell').html('\>');
+    } else if(SMALL_BREAKPOINT < $(window).width() && $(window).width() <= MID_BREAKPOINT){
       $('#score-header').html('CC SCORE');
-    } else {
+      $('#election-header').html('LAST PRES. RESULT');
       $('.district-cell, .election-cell').show();
       $('.results-cell > p:nth-child(2)').hide();
       $('button.results-cell').html('TAKE ACTION');
+    } else {
       $('#score-header').html('CLIMATE CABINET SCORE');
+      $('#election-header').html('LAST PRESIDENTIAL RESULT');
     }
   }
 }
@@ -267,7 +272,8 @@ async function handleStateSelection() {
 
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
-      let distShortcode = `${$('#state-input > option:selected').text()} ${legi['office']['district']['shortcode']}`;
+      // let distShortcode = `${$('#state-input > option:selected').text()} ${legi['office']['district']['shortcode']}`;
+      let distShortcode = legi['office']['district']['shortcode'];
       
       // replace the score value with '-' if NaN
       let ccScore = legi['cc_score'] ? parseInt(legi['cc_score']) : '-';
@@ -306,7 +312,7 @@ async function handleStateSelection() {
                 .append($(`<p>${ccScore}</p>`))
                 .append($(`<p>${electionCode}</p>`))
           )
-          .append($('<button class="results-cell">\></button>'))
+          .append($('<button class="results-cell">TAKE ACTION</button>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );

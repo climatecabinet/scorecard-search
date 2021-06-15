@@ -7,7 +7,7 @@
   @media (min-width: 600px) { @content; }
 }
 
-@mixin for-tablet-portait-only {
+@mixin for-tablet-portrait-only {
   @media (min-width: 600px) and (max-width: 899px) { @content; }
 }
 
@@ -103,6 +103,16 @@ button:enabled {
     text-align: center;
     color: black;
 
+    @include for-tablet-portrait-up {
+        padding: 0 .2em 0 0;
+        margin: .5rem 0;
+        font-size: .8rem;
+    }
+
+    @include for-tablet-landscape-up {
+        font-size: 1rem;
+    }
+
     @include for-desktop-up {
         padding: 0 1em 0 0;
         margin: 1rem 0;
@@ -129,6 +139,18 @@ select.search-input {
     
     border: 1px solid $cc-orange;
     font-size: 14pt;
+
+    @include for-tablet-portrait-only {
+        max-height: 2rem;
+        padding: .2rem;
+        font-size: .8rem;
+    }
+
+    @include for-tablet-landscape-only {
+        max-height: 2rem;
+        padding: .2rem;
+        font-size: .9rem;
+    }
 }
 
 select.search-input:disabled {
@@ -143,6 +165,18 @@ select.search-input:disabled {
     background: $cc-orange;
     color: white;
     border: none;
+
+    @include for-tablet-portrait-only {
+        width: unset;
+        height: 2.5rem;
+        font-size: .8rem;
+    }
+
+    @include for-tablet-landscape-only {
+        width: unset;
+        height: 2.5rem;
+        font-size: .8rem;
+    }
 
     @include for-desktop-up {
         max-width: 7.5rem;
@@ -216,18 +250,35 @@ select.search-input:disabled {
 }
 
 @mixin results-cell-layout {
-    padding: .7rem 1rem .7rem 0;
+    padding: 0.7rem 1rem 0.7rem 0;
     display: table-cell;
+
+    @include for-tablet-portrait-only {
+        padding: 0.7rem 1rem 1.2rem 0;
+    }
+
+    @include for-tablet-landscape-only {
+        padding: 0.7rem 1rem 1.4rem 0;
+    }
+}
+
+@mixin text-ellipses-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #results-headers div {
     @include results-cell-layout;
+    @include text-ellipses-overflow;
+    padding-bottom: 0.5rem !important;
     position: sticky;
     top: 0;
     transform: translate(0, -1px);
 
     font-size: 8pt;
     background-color: white;
+    vertical-align: bottom;
 
     @include for-desktop-up {
         font-size: .8rem;
@@ -238,6 +289,10 @@ select.search-input:disabled {
     @include results-cell-layout;
     font-size: 12pt;
 
+    @include for-tablet-landscape-up {
+        font-size: 1.2rem;
+    }
+
     @include for-desktop-up {
         font-size: 1.4rem;
         margin-bottom: 1.1rem;
@@ -247,7 +302,11 @@ select.search-input:disabled {
 .name-cell {
     width: 45%;
 
-    @include for-desktop-only {
+    @include for-tablet-portrait-up {
+        width: 25%;
+    }
+
+    @include for-desktop-up {
         width: 30%;
     }
 }
@@ -263,31 +322,53 @@ select.search-input:disabled {
 .score-cell {
     width: 30%;
 
-    @include for-desktop-only {
+    @include for-tablet-portrait-up {
+        width: 12%;
+    }
+
+    @include for-tablet-landscape-up {
+        width: 17%;
+    }
+
+    @include for-desktop-up {
         width: unset;
+    }
+}
+
+.election-cell {
+    @include for-tablet-landscape-only {
+        width: 19%;
     }
 }
 
 .results-cell p {
     margin: 0 0 .5em 0;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include text-ellipses-overflow;
 }
 
 .results-cell p:nth-child(2) {
     color: grey;
+    display: none;
 }
 
 #results-body button.results-cell {
     width: 100%;
     height: 100%;
     padding: 1rem;
-    // transform: translate(0, 1rem);
     border: none;
     background-color: $cc-orange;
     color: white;
 
     font-size: 1.1rem;
+
+    @include for-tablet-portrait-only {
+        height: 2.5rem;
+        padding: 0;
+        font-size: 0.8rem;
+    }
+
+    @include for-tablet-landscape-only {
+        font-size: 0.9rem;
+    }
 }
