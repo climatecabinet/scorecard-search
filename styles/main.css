@@ -139,42 +139,39 @@ select.search-input:disabled {
   border: 1px solid #777777;
 }
 
-#search-form > button {
+#reset-button {
+  display: none;
   width: 60%;
   margin: 0;
   max-width: 12.5em;
   font-size: 12pt;
-  background: #C36C27;
+  background: black;
   color: white;
   border: none;
 }
 @media (min-width: 600px) and (max-width: 899px) {
-  #search-form > button {
+  #reset-button {
     width: unset;
     height: 2.5rem;
     font-size: 0.8rem;
   }
 }
 @media (min-width: 900px) and (max-width: 1199px) {
-  #search-form > button {
+  #reset-button {
     width: unset;
     height: 2.5rem;
     font-size: 0.8rem;
   }
 }
 @media (min-width: 1200px) {
-  #search-form > button {
+  #reset-button {
     max-width: 7.5rem;
   }
 }
 
-#search-form > button:disabled {
+#reset-button:disabled {
   background: #777777;
   color: #EEEEEE;
-}
-
-#search-form > button.reset-button {
-  background: black;
 }
 
 #search-prompt {

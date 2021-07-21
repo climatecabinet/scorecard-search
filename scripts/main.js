@@ -181,9 +181,7 @@ function showFullForm(shouldShow){
   // hide the placeholder prompt
   if(shouldShow) {
     $('#search-prompt').hide();
-    $('#search-button')
-      .html('RESET')
-      .addClass('reset-button');
+    $('#reset-button').show();
     // display results elements
     $('#search-results').fadeIn({
       duration: 'fast',
@@ -191,13 +189,11 @@ function showFullForm(shouldShow){
     });
   } else {
     $('#search-prompt').show();
-    $('#search-button')
-      .html('SEARCH')
-      .removeClass('reset-button');
+    $('#reset-button').hide();
     $('#search-results').hide();
   }
 
-  $('#chamber-input, #district-input, #search-button')
+  $('#chamber-input, #district-input, #reset-button')
     .attr('disabled', !shouldShow);
 
 }
@@ -359,15 +355,10 @@ async function handleStateSelection() {
   });
 }
 
-// When a state is selected, enable the search button
-$('#state-input').on('change', () => {
-  // if the results table is currently displayed, just trigger a new state selection
-  if($('#search-results').is(':visible')){
-    handleStateSelection();
-  } else {
-    $('#search-form > button').attr('disabled', false);
-  }
-});
+/**
+ * When a state is selected, search for that state
+ */
+$('#state-input').on('change', handleStateSelection);
 
 /**
  * When the Reset button is clicked, reset the page.
@@ -375,21 +366,17 @@ $('#state-input').on('change', () => {
 $('#search-form > button').on('click', async function(e) {
   e.preventDefault();
 
-  if($('#search-form > button').html() == "SEARCH") {
-    handleStateSelection();
-  } else {
-    showFullForm(false);
+  showFullForm(false);
 
-    // reset the dropdown menu options
-    $('#chamber-input, #district-input')
-      .children()
-      .filter(function() {
-        return $(this).attr('hidden') != 'hidden';
-      })
-      .remove();
-    $('#chamber-input, #district-input').attr('disabled', true);
-    $('#state-input').val('');
-  }
+  // reset the dropdown menu options
+  $('#chamber-input, #district-input')
+    .children()
+    .filter(function() {
+      return $(this).attr('hidden') != 'hidden';
+    })
+    .remove();
+  $('#chamber-input, #district-input').attr('disabled', true);
+  $('#state-input').val('');
 });
 
 /**
