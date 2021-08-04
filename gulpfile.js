@@ -37,7 +37,7 @@ function scripts() {
  return src('scripts/main.js')
     .pipe($.plumber())
     .pipe(rename('main-built.js'))
-    .pipe(dest('scripts'))
+    .pipe(dest('dist'))
     .pipe(server.reload({stream: true}));
 };
 

@@ -136,7 +136,7 @@ select.search-input {
     width: 70%;
     padding: .5em;
     flex-shrink: 1;
-    
+
     border: 1px solid $cc-orange;
     font-size: 14pt;
 
@@ -230,7 +230,7 @@ select.search-input:disabled {
 #results-body {
     margin: 0;
     width: 97%;
-    
+
     display: table;
     table-layout: fixed;
 
@@ -310,7 +310,7 @@ select.search-input:disabled {
 
 .name-cell > p:nth-child(1) {
     font-weight: bold;
-    
+
     @include for-desktop-only {
         font-size: 1.6rem;
     }
@@ -332,7 +332,7 @@ select.search-input:disabled {
     }
 }
 
-.election-cell {
+.party-cell {
     @include for-tablet-landscape-only {
         width: 19%;
     }
