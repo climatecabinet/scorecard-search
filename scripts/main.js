@@ -1,10 +1,10 @@
-const CC_API_BASE = "https://us-west-2.aws.realm.mongodb.com/api/client/v2.0/app/ccscorecard-experimental-gubqp"
+const CC_API_BASE = "https://us-west-2.aws.realm.mongodb.com/api/client/v2.0/app/climate-cabinet-production-esyps";
 /** constant {string} */
-const CC_API_LOGIN = CC_API_BASE + "/auth/providers/api-key/login"
+const CC_API_LOGIN = CC_API_BASE + "/auth/providers/api-key/login";
 /** constant {string} */
 const CC_API_GQL = CC_API_BASE + "/graphql";
 /** constant {string} */
-const CC_API_KEY = "A1RJYVgCktjnwsajZuqOPrqHE14NANh0I0lOIde5Fbxdz1r80jItkfe4QiZz6gdV";
+const CC_API_KEY = "e5WolP3ekUwIQNvx7O01FgnhOFFwv9r43gV6PDlX4jIi1cWmMdPcXli6epxIRtDz";
 /** constant {integer} */
 const SMALL_BREAKPOINT = 599;
 /** constant {integer} */
