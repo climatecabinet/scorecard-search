@@ -403,6 +403,9 @@ $(document).ready(async function(){
       }
     `);
 
+    // ensure the list of regions is alphabetized
+    states.regions.sort((a, b) => {a.name.localeCompare(b.name)})
+
     // populate the state dropdown
     states.regions.forEach((reg) => {
       $("#state-input").append($(`<option value=${reg.state_abbr}>${reg.name}</option>`));
