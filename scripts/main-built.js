@@ -396,15 +396,15 @@ $(document).ready(async function(){
     // retrieve the states list from the database
     const states = await callAPI(`
       query {
-        regions (query: {_cls: "Region.State"}){
+        regions (
+          query: {_cls: "Region.State"},
+          sortBy: NAME_ASC
+        ){
           name
           state_abbr
         }
       }
     `);
-
-    // ensure the list of regions is alphabetized
-    states.regions.sort((a, b) => {a.name.localeCompare(b.name)})
 
     // populate the state dropdown
     states.regions.forEach((reg) => {
