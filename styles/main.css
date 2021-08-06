@@ -192,7 +192,8 @@ select.search-input:disabled {
   overflow-y: hidden;
   border: 0.5px #C36C27 solid;
   border-bottom: none;
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
   padding: 0.5rem 0.5rem 0 0.5rem;
   margin: 1.7rem 2rem 0 2rem;
 }

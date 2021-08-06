@@ -203,7 +203,8 @@ select.search-input:disabled {
 
     border: 0.5px $cc-orange solid;
     border-bottom: none;
-    border-radius: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 
     padding: 0.5rem 0.5rem 0 0.5rem;
     margin: 1.7rem 2rem 0 2rem;
