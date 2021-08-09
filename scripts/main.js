@@ -184,23 +184,24 @@ function filterSelectableDistricts() {
  * Applies approriate table formatting for the current Browser size.
  */
 function formatTableForBrowserSize() {
-  // if the table is displayed
-  if($('#search-results').css('display') != 'none'){
-    // get whether this is for mobile or not
-    if($(window).width() <= SMALL_BREAKPOINT){
-      $('.district-cell, .election-cell').hide();
-      $('.results-cell > p:nth-child(2)').show();
-      $('button.results-cell').html('\>');
-    } else if(SMALL_BREAKPOINT < $(window).width() && $(window).width() <= MID_BREAKPOINT){
-      $('#score-header').html('CC SCORE');
-      $('#election-header').html('LAST PRES. RESULT');
-      $('.district-cell, .election-cell').show();
-      $('.results-cell > p:nth-child(2)').hide();
-      $('button.results-cell').html('TAKE ACTION');
-    } else {
-      $('#score-header').html('CLIMATE CABINET SCORE');
-      $('#election-header').html('LAST PRESIDENTIAL RESULT');
-    }
+  // apply small breakpoint changes
+  if($(window).width() <= SMALL_BREAKPOINT){
+    $('button.results-cell').html('\>');
+    $('.district-cell, .election-cell').hide();
+    $('.results-cell > p:nth-child(2)').show();
+  } else {
+    $('button.results-cell').html('TAKE ACTION');
+    $('.district-cell, .election-cell').show();
+    $('.results-cell > p:nth-child(2)').hide();
+  }
+
+  // apply mid breakpoint changes
+  if($(window).width() <= MID_BREAKPOINT){
+    $('#score-header').html('CC SCORE');
+    $('#election-header').html('LAST PRES. RESULT');
+  } else {
+    $('#score-header').html('CLIMATE CABINET SCORE');
+    $('#election-header').html('LAST PRESIDENTIAL RESULT');
   }
 }
 
@@ -476,4 +477,7 @@ $(document).ready(async function(){
     // call handle state selection
     handleStateSelection();
   }
+
+  // make sure the UI loads according to browser size
+  formatTableForBrowserSize();
 });
