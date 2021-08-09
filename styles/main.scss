@@ -31,16 +31,22 @@
   @media (min-width: 1800px) { @content; }
 }
 
-$cc-orange: #C36C27;
-$cc-grey: #F3F3F3;
-$disabled: #777777;
-$disabled-text: #EEEEEE;
+// Use brand guideline colors:
+// https://docs.google.com/document/d/1yKD6DwIp8cBFuO9tA2PTdzyP5OLe_ZG1m7P3ihzFrvg/edit?usp=sharing
+$cc-af-logo-rusty-orange: #BB6C2F;
+$cc-af-light-gray: #D8D8D8;
+$cc-af-mid-gray: #C0C0BF;
+$cc-af-dark-gray: #5D5D5D;
+$cc-af-white: #FBFBFB;
+$cc-af-black: #070707;
+
+$disabled: $cc-af-dark-gray;
+$disabled-text: $cc-af-mid-gray;
 
 
 html, body {
     margin: 0;
     padding: 0;
-    background: #eee;
 }
 
 h2 {
@@ -62,7 +68,7 @@ button:enabled {
     height: inherit;
     background-image: url('../images/loading.gif');
     background-repeat: no-repeat;
-    background-color: #fff;
+    background-color: $cc-af-white;
     background-position: center;
 }
 
@@ -70,8 +76,8 @@ button:enabled {
     width: 100vw;
     height: 100vh;
     padding: 0;
-    background-color: #fff;
-    color: #333;
+    background-color: $cc-af-white;
+    color: $cc-af-black;
     font-family: 'Lato', sans-serif;
 
     display: flex;
@@ -97,11 +103,11 @@ button:enabled {
 }
 
 #search-form > h2 {
-    white-space: nowrap;
+    $cc-af-white-space: nowrap;
     margin-bottom: 0;
 
     text-align: center;
-    color: black;
+    color: $cc-af-black;
 
     @include for-tablet-portrait-up {
         padding: 0 .2em 0 0;
@@ -136,8 +142,8 @@ select.search-input {
     width: 70%;
     padding: .5em;
     flex-shrink: 1;
-    
-    border: 1px solid $cc-orange;
+
+    border: 1px solid $cc-af-logo-rusty-orange;
     font-size: 14pt;
 
     @include for-tablet-portrait-only {
@@ -163,8 +169,8 @@ select.search-input:disabled {
     margin: 0;
     max-width: 12.5em;
     font-size: 12pt;
-    background: black;
-    color: white;
+    background: $cc-af-black;
+    color: $cc-af-white;
     border: none;
 
     @include for-tablet-portrait-only {
@@ -211,7 +217,7 @@ select.search-input:disabled {
 #search-results > h2 {
     margin: 0 0 .3em 0;
     padding: 0;
-    color: $cc-orange;
+    color: $cc-af-logo-rusty-orange;
 
     @include for-desktop-up {
         font-size: 18pt;
@@ -224,13 +230,13 @@ select.search-input:disabled {
 
 #results-headers {
     display: table-row;
-    color: $cc-orange;
+    color: $cc-af-logo-rusty-orange;
 }
 
 #results-body {
     margin: 0;
     width: 97%;
-    
+
     display: table;
     table-layout: fixed;
 
@@ -260,7 +266,7 @@ select.search-input:disabled {
 }
 
 @mixin text-ellipses-overflow {
-    white-space: nowrap;
+    $cc-af-white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -274,7 +280,7 @@ select.search-input:disabled {
     transform: translate(0, -1px);
 
     font-size: 8pt;
-    background-color: white;
+    background-color: $cc-af-white;
     vertical-align: bottom;
 
     @include for-desktop-up {
@@ -310,7 +316,7 @@ select.search-input:disabled {
 
 .name-cell > p:nth-child(1) {
     font-weight: bold;
-    
+
     @include for-desktop-only {
         font-size: 1.6rem;
     }
@@ -340,12 +346,11 @@ select.search-input:disabled {
 
 .results-cell p {
     margin: 0 0 .5em 0;
-
     @include text-ellipses-overflow;
 }
 
 .results-cell p:nth-child(2) {
-    color: grey;
+    color: $cc-af-dark-gray;
     display: none;
 }
 
@@ -354,8 +359,8 @@ select.search-input:disabled {
     height: 100%;
     padding: 1rem;
     border: none;
-    background-color: $cc-orange;
-    color: white;
+    background-color: $cc-af-logo-rusty-orange;
+    color: $cc-af-white;
 
     font-size: 1.1rem;
 
