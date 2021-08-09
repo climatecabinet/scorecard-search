@@ -43,6 +43,7 @@ button:enabled {
 }
 
 #search-form {
+  white-space: nowrap;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
