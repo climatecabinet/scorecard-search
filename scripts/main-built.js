@@ -14,7 +14,10 @@ const LEGIS_LIMIT = 1000;
 /** constant {object} */
 var CC_API_TOKENS = null;
 
-/** 
+// Labels
+const COLUMN_NAME_PARTY = 'PARTY'
+
+/**
  * Gets auth tokens needed for making API queries and stores them globally.
  *
  * @async
@@ -41,7 +44,7 @@ async function getAuthTokens() {
   CC_API_TOKENS = await response.json();
 }
 
-/** 
+/**
  * Makes an API call, returns the response as JSON if successful.
  *
  * @async
@@ -59,8 +62,8 @@ async function callAPI(payload, variables = {}) {
       'Authorization': "Bearer " + CC_API_TOKENS.access_token,
       'Content-Type' : 'application/json',
     },
-    body: JSON.stringify({ 
-      query: payload, 
+    body: JSON.stringify({
+      query: payload,
       variables: variables
     })
   });
@@ -104,7 +107,7 @@ async function loadAndUnload(target, callback) {
 
   // wait for the callback
   await callback();
-  
+
   // redisplay the target's contents and remove animation
   $('.loading')
     .css('position', 'absolute')  // so it's not pushed by elems fading in
@@ -158,18 +161,18 @@ function formatTableForBrowserSize() {
   if($('#search-results').css('display') != 'none'){
     // get whether this is for mobile or not
     if($(window).width() <= SMALL_BREAKPOINT){
-      $('.district-cell, .election-cell').hide();
+      $('.district-cell, .party-cell').hide();
       $('.results-cell > p:nth-child(2)').show();
       $('button.results-cell').html('\>');
     } else if(SMALL_BREAKPOINT < $(window).width() && $(window).width() <= MID_BREAKPOINT){
       $('#score-header').html('CC SCORE');
-      $('#election-header').html('LAST PRES. RESULT');
-      $('.district-cell, .election-cell').show();
+      $('#party-header').html(COLUMN_NAME_PARTY);
+      $('.district-cell, .party-cell').show();
       $('.results-cell > p:nth-child(2)').hide();
       $('button.results-cell').html('TAKE ACTION');
     } else {
       $('#score-header').html('CLIMATE CABINET SCORE');
-      $('#election-header').html('LAST PRESIDENTIAL RESULT');
+      $('#party-header').html(COLUMN_NAME_PARTY);
     }
   }
 }
@@ -226,24 +229,20 @@ async function handleStateSelection() {
 
     // get all legislators from the API
     const allLegis = await callAPI(`
-      query ($stateAbbr: String){
+      query getIncumbentsForState($stateAbbr: String){
         representatives(
           query: {state_abbr: $stateAbbr, office: {is_current: true}}
           limit: ${LEGIS_LIMIT})
         {
           full_name
           role
+          party
           cc_score
           office {
             seat_number
             district {
               shortcode
               district_type
-              presidential_elections {
-                year
-                dem_share
-                rep_share
-              }
             }
           }
         }
@@ -268,24 +267,11 @@ async function handleStateSelection() {
 
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
-      // let distShortcode = `${$('#state-input > option:selected').text()} ${legi['office']['district']['shortcode']}`;
       let distShortcode = legi['office']['district']['shortcode'];
-      
+
       // replace the score value with '-' if NaN
       let ccScore = legi['cc_score'] ? parseInt(legi['cc_score']) : '-';
-      
-      // render the elections number, if possible - otherwise use a '-'
-      let electionCode = '-';
-      let electionList = legi['office']['district']['presidential_elections'];
-
-      if(electionList && electionList.filter(e => e['year'] === 2016)) {
-        let elctObj = electionList.filter(e => e['year'] === 2016).pop();
-        let elctLetter = elctObj['dem_share'] > elctObj['rep_share'] ? 'D' : 'R';
-        let elctNumber = Math.max(elctObj['dem_share'], elctObj['rep_share']) - Math.min(elctObj['dem_share'], elctObj['rep_share']);
-        elctNumber = (elctNumber*100).toFixed(2);
-
-        electionCode = `${elctLetter}+%${elctNumber}`;
-      }
+      let party = legi['party'] || 'Unknown';
 
       // render the row
       $('#results-body').append(
@@ -300,13 +286,12 @@ async function handleStateSelection() {
               .append($(`<p>${distShortcode}</p>`))
           )
           .append(
-            $('<div class="results-cell election-cell"></div>')
-              .append($(`<p>${electionCode}</p>`))
+            $('<div class="results-cell party-cell"></div>')
+              .append($(`<p>${party}</p>`))
           )
           .append(
             $('<div class="results-cell score-cell"></div>')
                 .append($(`<p>${ccScore}</p>`))
-                .append($(`<p>${electionCode}</p>`))
           )
           .append($('<button class="results-cell">TAKE ACTION</button>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())

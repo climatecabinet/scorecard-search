@@ -15,7 +15,7 @@ const LEGIS_LIMIT = 1000;
 var CC_API_TOKENS = null;
 
 // Labels
-const COLUMN_PARTY = 'PARTY'
+const COLUMN_NAME_PARTY = 'PARTY'
 
 /**
  * Gets auth tokens needed for making API queries and stores them globally.
@@ -166,13 +166,13 @@ function formatTableForBrowserSize() {
       $('button.results-cell').html('\>');
     } else if(SMALL_BREAKPOINT < $(window).width() && $(window).width() <= MID_BREAKPOINT){
       $('#score-header').html('CC SCORE');
-      $('#party-header').html(COLUMN_PARTY);
+      $('#party-header').html(COLUMN_NAME_PARTY);
       $('.district-cell, .party-cell').show();
       $('.results-cell > p:nth-child(2)').hide();
       $('button.results-cell').html('TAKE ACTION');
     } else {
       $('#score-header').html('CLIMATE CABINET SCORE');
-      $('#party-header').html(COLUMN_PARTY);
+      $('#party-header').html(COLUMN_NAME_PARTY);
     }
   }
 }
