@@ -238,6 +238,7 @@ select.search-input:disabled {
 #results-headers div {
   padding: 0.7rem 1rem 0.7rem 0;
   display: table-cell;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-bottom: 0.5rem !important;
@@ -342,6 +343,7 @@ select.search-input:disabled {
 
 .results-cell p {
   margin: 0 0 0.5em 0;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }

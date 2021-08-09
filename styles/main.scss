@@ -266,7 +266,7 @@ select.search-input:disabled {
 }
 
 @mixin text-ellipses-overflow {
-    $white-space: nowrap;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
