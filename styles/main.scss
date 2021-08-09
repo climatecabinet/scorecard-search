@@ -201,10 +201,16 @@ select.search-input:disabled {
     flex-flow: column nowrap;
     overflow-y: hidden;
 
-    padding: 1.8rem 2.1rem 0 2.1rem;
+    border: 0.5px $cc-orange solid;
+    border-bottom: none;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    margin: 1.7rem 2rem 0 2rem;
     @include for-tablet-portrait-up {
-        padding: 2em 2em 0 2em;
+        padding: 1rem 1rem 0 1rem;
+        margin: 1.9em 1.9em 0 1.9em;
     }
 }
 
