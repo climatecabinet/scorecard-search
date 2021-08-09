@@ -43,7 +43,6 @@ button:enabled {
 }
 
 #search-form {
-  white-space: nowrap;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -75,6 +74,7 @@ button:enabled {
 }
 
 #search-form > h2 {
+  white-space: nowrap;
   margin-bottom: 0;
   text-align: center;
   color: #070707;
