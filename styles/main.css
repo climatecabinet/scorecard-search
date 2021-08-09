@@ -343,7 +343,7 @@ select.search-input:disabled {
 }
 
 @media (min-width: 900px) and (max-width: 1199px) {
-  .election-cell {
+  .party-cell {
     width: 19%;
   }
 }
