@@ -292,6 +292,7 @@ async function handleStateSelection() {
           .append(
             $('<div class="results-cell score-cell"></div>')
                 .append($(`<p>${ccScore}</p>`))
+                .append($(`<p>${party}</p>`))
           )
           .append($('<button class="results-cell">TAKE ACTION</button>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())
