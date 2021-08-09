@@ -169,13 +169,14 @@ function filterSelectableDistricts() {
     }).hide();
 
   // if we've now hidden the currently selected district, reset the dropdown
-  let currDistInCurrChamber = $('#district-input')
+  let chamberOfCurrDist = $('#district-input')
     .find(':selected')
-    .attr('chamber')
-    .includes(currChamber);
+    .attr('chamber');
 
-  if (!currDistInCurrChamber) {
-    $('#district-input').val('');
+  if (chamberOfCurrDist) {
+    if (!chamberOfCurrDist.includes(currChamber)) {
+      $('#district-input').val('');
+    }
   }
 }
 
@@ -343,15 +344,29 @@ async function handleStateSelection() {
       );
     });
 
-    // get the names of this state's lower and upper chambers
     chambersMap = {};
+    let lowerDistNums = [];
+    let upperDistNums = [];
     allLegis['representatives'].forEach(legi => {
+      // get the names of this state's lower and upper chambers
       chamberType = legi['role'] === 'Senator' ? 'upper' : 'lower';
-
       if(!Object.keys(chambersMap).includes(chamberType)) {
         chambersMap[chamberType] = legi['office']['district']['district_type']
                                      .replace('Legislative', 'House')  // fix for MD
                                      .trim();
+      }
+
+      // get a list of district numbers in each chamber
+      if (legi['role'] == 'Representative'){
+        lowerDistNums.push(legi['office']['seat_number'])
+      } else if (legi['role'] == 'Senator'){
+        upperDistNums.push(legi['office']['seat_number'])
+      } else {
+        console.warn(
+          `Unable to identify role '${legi['role']}' of legislator ` +
+          `${legi['full_name']} - not adding their district number ` +
+          `to the district drop-down.`
+        );
       }
     });
 
@@ -359,18 +374,6 @@ async function handleStateSelection() {
       $('#chamber-input').append(
         `<option value="${chamber[0]}">${chamber[1]}</option>`
       );
-    });
-
-    // populate the district filter dropdown with a list of districts
-    let lowerDistNums = [];
-    let upperDistNums = [];
-    allLegis['representatives'].forEach(legi => {
-      if (legi['role'] == 'Representative'){
-        lowerDistNums.push(legi['office']['seat_number'])
-      }
-      else if (legi['role'] == 'Senator'){
-        upperDistNums.push(legi['office']['seat_number'])
-      }
     });
 
     let distNums = lowerDistNums.concat(upperDistNums)
