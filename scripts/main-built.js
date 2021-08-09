@@ -14,7 +14,10 @@ const LEGIS_LIMIT = 1000;
 /** constant {object} */
 var CC_API_TOKENS = null;
 
-/** 
+// Labels
+const COLUMN_NAME_PARTY = 'PARTY'
+
+/**
  * Gets auth tokens needed for making API queries and stores them globally.
  *
  * @async
@@ -41,7 +44,7 @@ async function getAuthTokens() {
   CC_API_TOKENS = await response.json();
 }
 
-/** 
+/**
  * Makes an API call, returns the response as JSON if successful.
  *
  * @async
@@ -59,8 +62,8 @@ async function callAPI(payload, variables = {}) {
       'Authorization': "Bearer " + CC_API_TOKENS.access_token,
       'Content-Type' : 'application/json',
     },
-    body: JSON.stringify({ 
-      query: payload, 
+    body: JSON.stringify({
+      query: payload,
       variables: variables
     })
   });
@@ -104,7 +107,7 @@ async function loadAndUnload(target, callback) {
 
   // wait for the callback
   await callback();
-  
+
   // redisplay the target's contents and remove animation
   $('.loading')
     .css('position', 'absolute')  // so it's not pushed by elems fading in
@@ -150,27 +153,58 @@ function refreshLegislatorFilters() {
   }
 }
 
+
+/**
+ * When a user selects a chamber, restrict district dropdown choices to only
+ * the districts in the chamber. 
+ */
+function filterSelectableDistricts() {
+  const currChamber = $('#chamber-input').val();
+
+  $('#district-input')
+    .children()
+    .show()
+    .filter(function() {
+      if ($(this).attr('chamber')) {
+        return !$(this).attr('chamber').includes(currChamber)
+      }
+      return false;
+    }).hide();
+
+  // if we've now hidden the currently selected district, reset the dropdown
+  let chamberOfCurrDist = $('#district-input')
+    .find(':selected')
+    .attr('chamber');
+
+  if (chamberOfCurrDist) {
+    if (!chamberOfCurrDist.includes(currChamber)) {
+      $('#district-input').val('');
+    }
+  }
+}
+
 /**
  * Applies approriate table formatting for the current Browser size.
  */
 function formatTableForBrowserSize() {
-  // if the table is displayed
-  if($('#search-results').css('display') != 'none'){
-    // get whether this is for mobile or not
-    if($(window).width() <= SMALL_BREAKPOINT){
-      $('.district-cell, .election-cell').hide();
-      $('.results-cell > p:nth-child(2)').show();
-      $('button.results-cell').html('\>');
-    } else if(SMALL_BREAKPOINT < $(window).width() && $(window).width() <= MID_BREAKPOINT){
-      $('#score-header').html('CC SCORE');
-      $('#election-header').html('LAST PRES. RESULT');
-      $('.district-cell, .election-cell').show();
-      $('.results-cell > p:nth-child(2)').hide();
-      $('button.results-cell').html('TAKE ACTION');
-    } else {
-      $('#score-header').html('CLIMATE CABINET SCORE');
-      $('#election-header').html('LAST PRESIDENTIAL RESULT');
-    }
+  // apply small breakpoint changes
+  if($(window).width() <= SMALL_BREAKPOINT){
+    $('button.results-cell').html('\>');
+    $('.district-cell, .election-cell').hide();
+    $('.results-cell > p:nth-child(2)').show();
+  } else {
+    $('button.results-cell').html('TAKE ACTION');
+    $('.district-cell, .election-cell').show();
+    $('.results-cell > p:nth-child(2)').hide();
+  }
+
+  // apply mid breakpoint changes
+  if($(window).width() <= MID_BREAKPOINT){
+    $('#score-header').html('CC SCORE');
+    $('#election-header').html('LAST PRES. RESULT');
+  } else {
+    $('#score-header').html('CLIMATE CABINET SCORE');
+    $('#election-header').html('LAST PRESIDENTIAL RESULT');
   }
 }
 
@@ -226,24 +260,20 @@ async function handleStateSelection() {
 
     // get all legislators from the API
     const allLegis = await callAPI(`
-      query ($stateAbbr: String){
+      query getIncumbentsForState($stateAbbr: String){
         representatives(
           query: {state_abbr: $stateAbbr, office: {is_current: true}}
           limit: ${LEGIS_LIMIT})
         {
           full_name
           role
+          party
           cc_score
           office {
             seat_number
             district {
               shortcode
               district_type
-              presidential_elections {
-                year
-                dem_share
-                rep_share
-              }
             }
           }
         }
@@ -268,24 +298,11 @@ async function handleStateSelection() {
 
     // render legislators to the results div
     allLegis['representatives'].forEach((legi) => {
-      // let distShortcode = `${$('#state-input > option:selected').text()} ${legi['office']['district']['shortcode']}`;
       let distShortcode = legi['office']['district']['shortcode'];
-      
+
       // replace the score value with '-' if NaN
       let ccScore = legi['cc_score'] ? parseInt(legi['cc_score']) : '-';
-      
-      // render the elections number, if possible - otherwise use a '-'
-      let electionCode = '-';
-      let electionList = legi['office']['district']['presidential_elections'];
-
-      if(electionList && electionList.filter(e => e['year'] === 2016)) {
-        let elctObj = electionList.filter(e => e['year'] === 2016).pop();
-        let elctLetter = elctObj['dem_share'] > elctObj['rep_share'] ? 'D' : 'R';
-        let elctNumber = Math.max(elctObj['dem_share'], elctObj['rep_share']) - Math.min(elctObj['dem_share'], elctObj['rep_share']);
-        elctNumber = (elctNumber*100).toFixed(2);
-
-        electionCode = `${elctLetter}+%${elctNumber}`;
-      }
+      let party = legi['party'] || 'Unknown';
 
       // render the row
       $('#results-body').append(
@@ -300,13 +317,13 @@ async function handleStateSelection() {
               .append($(`<p>${distShortcode}</p>`))
           )
           .append(
-            $('<div class="results-cell election-cell"></div>')
-              .append($(`<p>${electionCode}</p>`))
+            $('<div class="results-cell party-cell"></div>')
+              .append($(`<p>${party}</p>`))
           )
           .append(
             $('<div class="results-cell score-cell"></div>')
                 .append($(`<p>${ccScore}</p>`))
-                .append($(`<p>${electionCode}</p>`))
+                .append($(`<p>${party}</p>`))
           )
           .append($('<button class="results-cell">TAKE ACTION</button>'))
           .attr('district', legi['office']['seat_number'].toLowerCase())
@@ -314,15 +331,29 @@ async function handleStateSelection() {
       );
     });
 
-    // get the names of this state's lower and upper chambers
     chambersMap = {};
+    let lowerDistNums = [];
+    let upperDistNums = [];
     allLegis['representatives'].forEach(legi => {
+      // get the names of this state's lower and upper chambers
       chamberType = legi['role'] === 'Senator' ? 'upper' : 'lower';
-
       if(!Object.keys(chambersMap).includes(chamberType)) {
         chambersMap[chamberType] = legi['office']['district']['district_type']
                                      .replace('Legislative', 'House')  // fix for MD
                                      .trim();
+      }
+
+      // get a list of district numbers in each chamber
+      if (legi['role'] == 'Representative'){
+        lowerDistNums.push(legi['office']['seat_number'])
+      } else if (legi['role'] == 'Senator'){
+        upperDistNums.push(legi['office']['seat_number'])
+      } else {
+        console.warn(
+          `Unable to identify role '${legi['role']}' of legislator ` +
+          `${legi['full_name']} - not adding their district number ` +
+          `to the district drop-down.`
+        );
       }
     });
 
@@ -332,9 +363,8 @@ async function handleStateSelection() {
       );
     });
 
-    // populate the district filter dropdown with a list of districts
-    let distNums = allLegis['representatives']
-                    .map((legi) => legi['office']['seat_number']);
+    let distNums = lowerDistNums.concat(upperDistNums)
+
     distNums
       .filter((d, i) => distNums.indexOf(d) === i)
       .sort((a, b) => {
@@ -342,10 +372,21 @@ async function handleStateSelection() {
           a.replace(/[0-9]/, '').localeCompare(b.replace(/[0-9]/, ''));
       })
       .forEach((distNum) => {
+        let chamber = '';
+        if (lowerDistNums.includes(distNum)) {
+          chamber += 'lower';
+        }
+        if (upperDistNums.includes(distNum)) {
+          chamber += 'upper';
+        }
+
         $('#district-input').append(
-          `<option value="${distNum.toLowerCase()}">${distNum}</option>`
+          `<option chamber="${chamber}" value="${distNum.toLowerCase()}">${distNum}</option>`
         );
       });
+
+    // if #chamber-input changes, restrict the district dropdown choices
+    $('#chamber-input').on('change', filterSelectableDistricts);
 
     // start listening for changes to the district/ chamber filters
     $('#chamber-input').on('change', refreshLegislatorFilters);
@@ -422,4 +463,7 @@ $(document).ready(async function(){
     // call handle state selection
     handleStateSelection();
   }
+
+  // make sure the UI loads according to browser size
+  formatTableForBrowserSize();
 });
