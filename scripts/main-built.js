@@ -153,27 +153,58 @@ function refreshLegislatorFilters() {
   }
 }
 
+
+/**
+ * When a user selects a chamber, restrict district dropdown choices to only
+ * the districts in the chamber. 
+ */
+function filterSelectableDistricts() {
+  const currChamber = $('#chamber-input').val();
+
+  $('#district-input')
+    .children()
+    .show()
+    .filter(function() {
+      if ($(this).attr('chamber')) {
+        return !$(this).attr('chamber').includes(currChamber)
+      }
+      return false;
+    }).hide();
+
+  // if we've now hidden the currently selected district, reset the dropdown
+  let chamberOfCurrDist = $('#district-input')
+    .find(':selected')
+    .attr('chamber');
+
+  if (chamberOfCurrDist) {
+    if (!chamberOfCurrDist.includes(currChamber)) {
+      $('#district-input').val('');
+    }
+  }
+}
+
 /**
  * Applies approriate table formatting for the current Browser size.
  */
 function formatTableForBrowserSize() {
-  // if the table is displayed
-  if($('#search-results').css('display') != 'none'){
-    // get whether this is for mobile or not
-    if($(window).width() <= SMALL_BREAKPOINT){
-      $('.district-cell, .party-cell').hide();
-      $('.results-cell > p:nth-child(2)').show();
-      $('button.results-cell').html('\>');
-    } else if(SMALL_BREAKPOINT < $(window).width() && $(window).width() <= MID_BREAKPOINT){
-      $('#score-header').html('CC SCORE');
-      $('#party-header').html(COLUMN_NAME_PARTY);
-      $('.district-cell, .party-cell').show();
-      $('.results-cell > p:nth-child(2)').hide();
-      $('button.results-cell').html('TAKE ACTION');
-    } else {
-      $('#score-header').html('CLIMATE CABINET SCORE');
-      $('#party-header').html(COLUMN_NAME_PARTY);
-    }
+  // apply small breakpoint changes
+  if($(window).width() <= SMALL_BREAKPOINT){
+    $('button.results-cell').html('\>');
+    $('.district-cell, .election-cell').hide();
+    $('.results-cell > p:nth-child(2)').show();
+  } else {
+    $('button.results-cell').html('TAKE ACTION');
+    $('.district-cell, .election-cell').show();
+    $('.results-cell > p:nth-child(2)').hide();
+  }
+
+  // apply mid breakpoint changes
+  if($(window).width() <= MID_BREAKPOINT){
+    $('#score-header').html('CC SCORE');
+    $('#election-header').html('LAST PRES. RESULT');
+  } else {
+    $('#score-header').html('CLIMATE CABINET SCORE');
+    $('#election-header').html('LAST PRESIDENTIAL RESULT');
   }
 }
 
@@ -300,15 +331,29 @@ async function handleStateSelection() {
       );
     });
 
-    // get the names of this state's lower and upper chambers
     chambersMap = {};
+    let lowerDistNums = [];
+    let upperDistNums = [];
     allLegis['representatives'].forEach(legi => {
+      // get the names of this state's lower and upper chambers
       chamberType = legi['role'] === 'Senator' ? 'upper' : 'lower';
-
       if(!Object.keys(chambersMap).includes(chamberType)) {
         chambersMap[chamberType] = legi['office']['district']['district_type']
                                      .replace('Legislative', 'House')  // fix for MD
                                      .trim();
+      }
+
+      // get a list of district numbers in each chamber
+      if (legi['role'] == 'Representative'){
+        lowerDistNums.push(legi['office']['seat_number'])
+      } else if (legi['role'] == 'Senator'){
+        upperDistNums.push(legi['office']['seat_number'])
+      } else {
+        console.warn(
+          `Unable to identify role '${legi['role']}' of legislator ` +
+          `${legi['full_name']} - not adding their district number ` +
+          `to the district drop-down.`
+        );
       }
     });
 
@@ -318,9 +363,8 @@ async function handleStateSelection() {
       );
     });
 
-    // populate the district filter dropdown with a list of districts
-    let distNums = allLegis['representatives']
-                    .map((legi) => legi['office']['seat_number']);
+    let distNums = lowerDistNums.concat(upperDistNums)
+
     distNums
       .filter((d, i) => distNums.indexOf(d) === i)
       .sort((a, b) => {
@@ -328,10 +372,21 @@ async function handleStateSelection() {
           a.replace(/[0-9]/, '').localeCompare(b.replace(/[0-9]/, ''));
       })
       .forEach((distNum) => {
+        let chamber = '';
+        if (lowerDistNums.includes(distNum)) {
+          chamber += 'lower';
+        }
+        if (upperDistNums.includes(distNum)) {
+          chamber += 'upper';
+        }
+
         $('#district-input').append(
-          `<option value="${distNum.toLowerCase()}">${distNum}</option>`
+          `<option chamber="${chamber}" value="${distNum.toLowerCase()}">${distNum}</option>`
         );
       });
+
+    // if #chamber-input changes, restrict the district dropdown choices
+    $('#chamber-input').on('change', filterSelectableDistricts);
 
     // start listening for changes to the district/ chamber filters
     $('#chamber-input').on('change', refreshLegislatorFilters);
@@ -408,4 +463,7 @@ $(document).ready(async function(){
     // call handle state selection
     handleStateSelection();
   }
+
+  // make sure the UI loads according to browser size
+  formatTableForBrowserSize();
 });
