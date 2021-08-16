@@ -189,7 +189,7 @@ select.search-input:disabled {
       -ms-flex-flow: column nowrap;
           flex-flow: column nowrap;
   overflow-y: hidden;
-  border: 0.5px #C36C27 solid;
+  border: 0.5px #BB6C2F solid;
   border-bottom: none;
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;
