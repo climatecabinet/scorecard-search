@@ -136,6 +136,10 @@ button:enabled {
     @include for-tablet-landscape-up {
         max-width: unset;
     }
+
+    @include for-desktop-up {
+        height: 40px;
+    }
 }
 
 select.search-input {
@@ -156,6 +160,10 @@ select.search-input {
         max-height: 2rem;
         padding: .2rem;
         font-size: .9rem;
+    }
+
+    @include for-desktop-up {
+        font-size: 16px;
     }
 }
 
