@@ -318,7 +318,7 @@ select.search-input:disabled {
 }
 @media (min-width: 1200px) and (max-width: 1799px) {
   .name-cell > p:nth-child(1) {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 }
 
