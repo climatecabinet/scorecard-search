@@ -289,7 +289,7 @@ async function handleStateSelection() {
 
       // render the row
       const { slug } = legi;
-      const onClick = `window.open('${LEGISLATOR_PAGE_URL_PREFIX}${slug}', '_blank')`;
+      const ctaOnClick = `window.open('${LEGISLATOR_PAGE_URL_PREFIX}${slug}', '_blank')`;
 
       $('#results-body').append(
         $('<div class="results-row"></div>')
@@ -311,7 +311,7 @@ async function handleStateSelection() {
                 .append($(`<p>${ccScore}</p>`))
                 .append($(`<p>${party}</p>`))
           )
-          .append($(`<button class="results-cell" onclick="${onClick}">TAKE ACTION</button>`))
+          .append($(`<button class="results-cell" onclick="${ctaOnClick}">TAKE ACTION</button>`))
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );
