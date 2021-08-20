@@ -130,8 +130,9 @@ button:enabled {
     padding: 10px;
     margin: 10px;
 
-    max-width: 15.6rem;
+    width: 70%;
     height: 3.2rem;
+    max-width: 15.6rem;
 
     @include for-tablet-landscape-up {
         max-width: unset;
@@ -143,7 +144,6 @@ button:enabled {
 }
 
 select.search-input {
-    width: 70%;
     padding: .5em;
     flex-shrink: 1;
 
@@ -171,36 +171,45 @@ select.search-input:disabled {
     border: 1px solid $disabled;
 }
 
-#reset-button {
+#reset-container {
     display: none;
-    width: 60%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
     margin: 0;
-    max-width: 12.5em;
-    font-size: 12pt;
-    background: $cc-af-black;
-    color: $cc-af-white;
-    border: none;
+    padding: 0;
 
-    @include for-tablet-portrait-only {
+    @include for-tablet-portrait-up {
         width: unset;
         height: 2.5rem;
-        font-size: .8rem;
-    }
-
-    @include for-tablet-landscape-only {
-        width: unset;
-        height: 2.5rem;
-        font-size: .8rem;
+        padding: 0 .5rem;
     }
 
     @include for-desktop-up {
         max-width: 7.5rem;
+        padding: 0 1rem;
     }
 }
 
-#reset-button:disabled {
-    background: $disabled;
-    color: $disabled-text;
+#reset-container > h3 {
+    margin: 0;
+    padding: 0;
+
+    font-size: 1em;
+    text-decoration: underline;
+    text-align: right;
+
+    color: $cc-af-black;
+
+    cursor: pointer;
+
+    @include for-tablet-portrait-up {
+        font-size: .8em;
+    }
+
+    @include for-desktop-up {
+        font-size: 1em;
+    }
 }
 
 #search-prompt {
