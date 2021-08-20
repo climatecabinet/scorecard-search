@@ -14,8 +14,7 @@ const LEGIS_LIMIT = 1000;
 /** constant {object} */
 var CC_API_TOKENS = null;
 
-// Labels
-const COLUMN_NAME_PARTY = 'PARTY'
+const LEGISLATOR_PAGE_URL_PREFIX = 'https://www.climatecabinetaction.org/legislator-pages/'
 
 /**
  * Gets auth tokens needed for making API queries and stores them globally.
@@ -99,7 +98,7 @@ async function loadAndUnload(target, callback) {
   // alter the target to display the animation and hide contents
   const $toHide = $(target)
                     .children()
-                    .filter(function(index) {
+                    .filter(function() {
                       return $( this ).css('display') != 'none';
                     });
   $toHide.hide();
@@ -113,21 +112,6 @@ async function loadAndUnload(target, callback) {
     .css('position', 'absolute')  // so it's not pushed by elems fading in
     .fadeOut('slow');
   $toHide.fadeIn('slow');
-}
-
-/**
- * Once a state's representatives have been retrived, display them.
- * @function
- */
-function displayStateLegislators() {
-  // remove placeholder elements
-  $('#search-prompt').css('display', 'none');
-
-  // display results elements
-  $('#search-results').fadeIn({
-    duration: 'fast',
-    start: () => $('#search-results').css('display', 'flex')
-  });
 }
 
 /**
@@ -156,7 +140,7 @@ function refreshLegislatorFilters() {
 
 /**
  * When a user selects a chamber, restrict district dropdown choices to only
- * the districts in the chamber. 
+ * the districts in the chamber.
  */
 function filterSelectableDistricts() {
   const currChamber = $('#chamber-input').val();
@@ -189,7 +173,7 @@ function filterSelectableDistricts() {
 function formatTableForBrowserSize() {
   // apply small breakpoint changes
   if($(window).width() <= SMALL_BREAKPOINT){
-    $('button.results-cell').html('\>');
+    $('button.results-cell').html('>');
     $('.district-cell, .party-cell').hide();
     $('.results-cell > p:nth-child(2)').show();
   } else {
@@ -267,6 +251,7 @@ async function handleStateSelection() {
           role
           party
           cc_score
+          slug
           office {
             seat_number
             district {
@@ -303,6 +288,9 @@ async function handleStateSelection() {
       let party = legi['party'] || 'Unknown';
 
       // render the row
+      const { slug } = legi;
+      const ctaOnClick = `window.open('${LEGISLATOR_PAGE_URL_PREFIX}${slug}', '_blank')`;
+
       $('#results-body').append(
         $('<div class="results-row"></div>')
           .append(
@@ -323,18 +311,18 @@ async function handleStateSelection() {
                 .append($(`<p>${ccScore}</p>`))
                 .append($(`<p>${party}</p>`))
           )
-          .append($('<button class="results-cell">TAKE ACTION</button>'))
+          .append($(`<button class="results-cell" onclick="${ctaOnClick}">TAKE ACTION</button>`))
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );
     });
 
-    chambersMap = {};
+    const chambersMap = {};
     let lowerDistNums = [];
     let upperDistNums = [];
     allLegis['representatives'].forEach(legi => {
       // get the names of this state's lower and upper chambers
-      chamberType = legi['role'] === 'Senator' ? 'upper' : 'lower';
+      const chamberType = legi['role'] === 'Senator' ? 'upper' : 'lower';
       if(!Object.keys(chambersMap).includes(chamberType)) {
         chambersMap[chamberType] = legi['office']['district']['district_type']
                                      .replace('Legislative', 'House')  // fix for MD
