@@ -351,9 +351,15 @@ select.search-input:disabled {
 
 .results-cell p {
   margin: 0 0 0.5em 0;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+@media (min-width: 600px) {
+  .results-cell p {
+    font-size: unset;
+  }
 }
 
 .results-cell p:nth-child(2) {

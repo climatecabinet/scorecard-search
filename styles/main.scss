@@ -354,7 +354,12 @@ select.search-input:disabled {
 
 .results-cell p {
     margin: 0 0 .5em 0;
+    font-size: 16px;
     @include text-ellipses-overflow;
+
+    @include for-tablet-portrait-up {
+        font-size: unset;
+    }
 }
 
 .results-cell p:nth-child(2) {
