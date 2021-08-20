@@ -201,16 +201,8 @@ select.search-input:disabled {
   overflow-y: hidden;
   border: 0.5px #BB6C2F solid;
   border-bottom: none;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-  padding: 0.5rem 0.5rem 0 0.5rem;
-  margin: 1.7rem 2rem 0 2rem;
-}
-@media (min-width: 600px) {
-  #search-results {
-    padding: 1rem 1rem 0 1rem;
-    margin: 1.9em 1.9em 0 1.9em;
-  }
+  padding: 1rem 1rem;
+  margin: 1rem;
 }
 
 #search-results > h2 {
