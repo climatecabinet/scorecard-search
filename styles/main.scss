@@ -298,7 +298,7 @@ select.search-input:disabled {
 
 .results-cell {
     @include results-cell-layout;
-    font-size: 12pt;
+    font-size: 16px;
 
     @include for-tablet-landscape-up {
         font-size: 1.2rem;
@@ -354,12 +354,7 @@ select.search-input:disabled {
 
 .results-cell p {
     margin: 0 0 .5em 0;
-    font-size: 16px;
     @include text-ellipses-overflow;
-
-    @include for-tablet-portrait-up {
-        font-size: unset;
-    }
 }
 
 .results-cell p:nth-child(2) {
