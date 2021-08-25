@@ -394,7 +394,7 @@ $('#state-input').on('change', handleStateSelection);
 /**
  * When the Reset button is clicked, reset the page.
  */
-$('#reset-container > h3').on('click', async function(e) {
+$('#reset-container > button').on('click', async function(e) {
   e.preventDefault();
 
   showFullForm(false);

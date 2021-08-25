@@ -182,7 +182,7 @@ select.search-input:disabled {
     @include for-tablet-portrait-up {
         width: unset;
         height: 2.5rem;
-        padding: 0 .5rem;
+        padding: 0 0.5rem;
     }
 
     @include for-desktop-up {
@@ -191,17 +191,17 @@ select.search-input:disabled {
     }
 }
 
-#reset-container > h3 {
+#reset-container > button {
     margin: 0;
     padding: 0;
+
+    color: $cc-af-black;
+    background: none;
+    border: none;
 
     font-size: 1em;
     text-decoration: underline;
     text-align: right;
-
-    color: $cc-af-black;
-
-    cursor: pointer;
 
     @include for-tablet-portrait-up {
         font-size: .8em;

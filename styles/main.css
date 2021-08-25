@@ -177,22 +177,23 @@ select.search-input:disabled {
   }
 }
 
-#reset-container > h3 {
+#reset-container > button {
   margin: 0;
   padding: 0;
+  color: #070707;
+  background: none;
+  border: none;
   font-size: 1em;
   text-decoration: underline;
   text-align: right;
-  color: #070707;
-  cursor: pointer;
 }
 @media (min-width: 600px) {
-  #reset-container > h3 {
+  #reset-container > button {
     font-size: 0.8em;
   }
 }
 @media (min-width: 1200px) {
-  #reset-container > h3 {
+  #reset-container > button {
     font-size: 1em;
   }
 }
