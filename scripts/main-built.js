@@ -197,19 +197,23 @@ function showFullForm(shouldShow){
   // hide the placeholder prompt
   if(shouldShow) {
     $('#search-prompt').hide();
-    $('#reset-button').show();
-    // display results elements
+    $('#reset-container').show({
+      duration: 0,
+      start: () => {
+        $('#reset-container').css('display', 'flex');
+      }
+    });
     $('#search-results').fadeIn({
       duration: 'fast',
       start: () => $('#search-results').css('display', 'flex')
     });
   } else {
     $('#search-prompt').show();
-    $('#reset-button').hide();
+    $('#reset-container').hide();
     $('#search-results').hide();
   }
 
-  $('#chamber-input, #district-input, #reset-button')
+  $('#chamber-input, #district-input, #reset-container')
     .attr('disabled', !shouldShow);
 
 }
@@ -390,7 +394,7 @@ $('#state-input').on('change', handleStateSelection);
 /**
  * When the Reset button is clicked, reset the page.
  */
-$('#search-form > button').on('click', async function(e) {
+$('#reset-container > button').on('click', async function(e) {
   e.preventDefault();
 
   showFullForm(false);
