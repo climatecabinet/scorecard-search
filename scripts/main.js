@@ -288,7 +288,7 @@ async function handleStateSelection() {
       let distShortcode = legi['office']['district']['shortcode'];
 
       // replace the score value with '-' if NaN
-      let ccScore = legi['cc_score'] ? parseInt(legi['cc_score']) : '-';
+      let ccScore = legi['cc_score'] !== null ? parseInt(legi['cc_score']) : '-';
       let party = legi['party'] || 'Unknown';
 
       // render the row
