@@ -173,11 +173,13 @@ function filterSelectableDistricts() {
 function formatTableForBrowserSize() {
   // apply small breakpoint changes
   if($(window).width() <= SMALL_BREAKPOINT){
-    $('button.results-cell').html('>');
+    $('.results-cell button')
+        .html('')
+        .attr('style', 'background: no-repeat center/contain url("../../images/take_action_mobile.png")');
     $('.district-cell, .party-cell').hide();
     $('.results-cell > p:nth-child(2)').show();
   } else {
-    $('button.results-cell').html('TAKE ACTION');
+    $('.results-cell button').html('TAKE ACTION').attr('style', '');
     $('.district-cell, .party-cell').show();
     $('.results-cell > p:nth-child(2)').hide();
   }
@@ -315,7 +317,10 @@ async function handleStateSelection() {
                 .append($(`<p>${ccScore}</p>`))
                 .append($(`<p>${party}</p>`))
           )
-          .append($(`<button class="results-cell" onclick="${ctaOnClick}">TAKE ACTION</button>`))
+          .append(
+            $('<div class="results-cell cta-cell"></div>')
+                .append($(`<button onclick="${ctaOnClick}">TAKE ACTION</button>`))
+          )
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );

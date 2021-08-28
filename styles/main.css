@@ -376,7 +376,7 @@ select.search-input:disabled {
   display: none;
 }
 
-#results-body button.results-cell {
+.results-cell button {
   width: 100%;
   height: 100%;
   padding: 1rem;
@@ -386,24 +386,24 @@ select.search-input:disabled {
   font-size: 1.1rem;
 }
 @media (min-width: 600px) {
-  #results-body button.results-cell {
+  .results-cell button {
     padding: 0;
     height: 40px;
   }
 }
 @media (min-width: 600px) and (max-width: 899px) {
-  #results-body button.results-cell {
+  .results-cell button {
     height: 2.5rem;
     font-size: 0.8rem;
   }
 }
 @media (min-width: 900px) and (max-width: 1199px) {
-  #results-body button.results-cell {
+  .results-cell button {
     font-size: 0.9rem;
   }
 }
 @media (min-width: 1200px) {
-  #results-body button.results-cell {
+  .results-cell button {
     font-size: 1rem;
   }
 }
