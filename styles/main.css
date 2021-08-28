@@ -106,6 +106,12 @@ button:enabled {
   height: 3.2rem;
   max-width: 15.6rem;
 }
+@media (max-width: 599px) {
+  .search-input {
+    max-width: unset;
+    width: 90%;
+  }
+}
 @media (min-width: 900px) {
   .search-input {
     max-width: unset;
@@ -123,6 +129,11 @@ select.search-input {
       flex-shrink: 1;
   border: 1px solid #BB6C2F;
   font-size: 14pt;
+}
+@media (max-width: 599px) {
+  select.search-input {
+    font-size: 16px;
+  }
 }
 @media (min-width: 600px) and (max-width: 899px) {
   select.search-input {
