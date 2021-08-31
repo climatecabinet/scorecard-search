@@ -394,7 +394,7 @@ select.search-input:disabled {
 @media (min-width: 600px) and (max-width: 899px) {
   .cta-button {
     height: 2.5rem;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 @media (min-width: 900px) and (max-width: 1199px) {
