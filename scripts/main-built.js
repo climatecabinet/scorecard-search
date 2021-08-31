@@ -168,16 +168,20 @@ function filterSelectableDistricts() {
 }
 
 /**
- * Applies approriate table formatting for the current Browser size.
+ * Applies appropriate table formatting for the current Browser size.
  */
 function formatTableForBrowserSize() {
   // apply small breakpoint changes
   if($(window).width() <= SMALL_BREAKPOINT){
-    $('button.results-cell').html('>');
+    $('.cta-button')
+      .html('')
+      .css('background', 'no-repeat center/contain url("../../images/take_action_mobile.png")');
     $('.district-cell, .party-cell').hide();
     $('.results-cell > p:nth-child(2)').show();
   } else {
-    $('button.results-cell').html('TAKE ACTION');
+    $('.cta-button')
+      .html('TAKE ACTION')
+      .css('background', '');
     $('.district-cell, .party-cell').show();
     $('.results-cell > p:nth-child(2)').hide();
   }
@@ -315,7 +319,10 @@ async function handleStateSelection() {
                 .append($(`<p>${ccScore}</p>`))
                 .append($(`<p>${party}</p>`))
           )
-          .append($(`<button class="results-cell" onclick="${ctaOnClick}">TAKE ACTION</button>`))
+          .append(
+            $('<div class="results-cell"></div>')
+                .append($(`<button class="cta-button" aria-label="Take Action" onclick="${ctaOnClick}">TAKE ACTION</button>`))
+          )
           .attr('district', legi['office']['seat_number'].toLowerCase())
           .attr('chamber', legi['role'] === 'Senator' ? 'upper' : 'lower')
       );
