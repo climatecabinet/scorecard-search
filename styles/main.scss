@@ -134,6 +134,11 @@ button:enabled {
     height: 3.2rem;
     max-width: 15.6rem;
 
+    @include for-phone-only {
+        max-width: unset;
+        width: 90%;
+    }
+
     @include for-tablet-landscape-up {
         max-width: unset;
     }
@@ -149,6 +154,10 @@ select.search-input {
 
     border: 1px solid $cc-af-logo-rusty-orange;
     font-size: 14pt;
+
+    @include for-phone-only {
+        font-size: 16px;
+    }
 
     @include for-tablet-portrait-only {
         max-height: 2rem;
