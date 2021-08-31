@@ -133,6 +133,7 @@ select.search-input {
 @media (max-width: 599px) {
   select.search-input {
     font-size: 16px;
+    height: 40px;
   }
 }
 @media (min-width: 600px) and (max-width: 899px) {
