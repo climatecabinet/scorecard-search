@@ -175,7 +175,7 @@ function formatTableForBrowserSize() {
   if($(window).width() <= SMALL_BREAKPOINT){
     $('.cta-button')
       .html('')
-      .css('background', 'no-repeat center/contain url("../../images/take_action_mobile.png")');
+      .css('background', 'no-repeat center/contain url("/images/take_action_mobile.png")');
     $('.district-cell, .party-cell').hide();
     $('.results-cell > p:nth-child(2)').show();
   } else {
