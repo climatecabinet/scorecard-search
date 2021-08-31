@@ -175,13 +175,13 @@ function formatTableForBrowserSize() {
   if($(window).width() <= SMALL_BREAKPOINT){
     $('.cta-button')
       .html('')
-      .css('background', 'no-repeat center/contain url("/images/take_action_mobile.png")');
+      .addClass('mobile-cta-button');
     $('.district-cell, .party-cell').hide();
     $('.results-cell > p:nth-child(2)').show();
   } else {
     $('.cta-button')
       .html('TAKE ACTION')
-      .css('background', '');
+      .removeClass('mobile-cta-button');
     $('.district-cell, .party-cell').show();
     $('.results-cell > p:nth-child(2)').hide();
   }
