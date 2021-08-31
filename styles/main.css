@@ -418,3 +418,7 @@ select.search-input:disabled {
     font-size: 1rem;
   }
 }
+
+.mobile-cta-button {
+  background: no-repeat center/contain url("../images/take_action_mobile.png");
+}
